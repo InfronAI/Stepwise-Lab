@@ -1,0 +1,7 @@
+{
+  "source": ".cache/scored.sqlite",
+  "sha256": "a1f56587a33293632f9e4ae50e7cd2028e4c330a4d257537c18b3d8159ee5d90",
+  "population": 1860,
+  "methods": "prm,orm",
+  "ns": "1,10,25,50,100,200,500,1000,1860"
+}

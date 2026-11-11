@@ -1,0 +1,63 @@
+{
+  "m1-local": {
+    "samples": 184,
+    "problems": 32,
+    "split_overlap": 0
+  },
+  "cpu-smoke": {
+    "samples": 184,
+    "problems": 32,
+    "split_overlap": 0
+  },
+  "README.md": "local links exist",
+  "README.zh-CN.md": "local links exist",
+  "demo_video": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1440,
+        "height": 1000
+      }
+    ],
+    "format": {
+      "duration": "45.080000",
+      "size": "582363"
+    }
+  },
+  "source_files_sha256": {
+    "prm800k/__init__.py": "58add1a6c177ee99ceebc1c04d147520b3b9c20d0eaefa9775eef53a5796bdb7",
+    "prm800k/__main__.py": "3129adff95e0f38b87ab34cddfc27082c7892bcaec267ff5d40f160fdf55b44a",
+    "prm800k/ablations.py": "9886f95aa9b3e281c1864bd60425bc4bd4774838fcfd0ff28179107b09e711e3",
+    "prm800k/assets.py": "6e5d768fab3958f5d3e894dfc86576f4ed9bc769e951e0f936333e03360cb90b",
+    "prm800k/cli.py": "d94649f315bda6a81cf86c3d0d6aa3597114e6b7d3eda41054be2379b6090006",
+    "prm800k/data.py": "f01202135298c4fd9a3ee3194f24940128a5933291d1bb8d58bed80c6735c4c1",
+    "prm800k/eval/__init__.py": "b8dcad515c0688d7c954e6fd88fd0913b4dcbf908d595d2cb7c4c1e7d3f5f3e8",
+    "prm800k/eval/eval.py": "f1f9446c4bc9167ecd75f9ea9f7bc4ddbd2fe62b25a665be722b407a7996e83e",
+    "prm800k/evaluation.py": "bc437fc612f03db83162b616f1d5bb7c20e080ab5844d53bdcd31c8d91c6378e",
+    "prm800k/experiment.py": "4a6d5a39d1f98eba938ed398063fb994322606bbda7ea7d6365f2ecdc345573d",
+    "prm800k/finetuning.py": "1b36303af89261b96ae91e698b1a79667b520240c2aa23226d68074f95d9fef1",
+    "prm800k/generation.py": "601e793b5b7643bde18f2ebf7692659b48caad89d246d81603a122fd82f8c9ef",
+    "prm800k/grading/__init__.py": "79701c8cbedb79d2f6fb3242667b4a98a054d96f0f68bac158f02416729de8ff",
+    "prm800k/grading/grader.py": "88e87f0f06959f737c1e85fdb03a750464e2715cdc25e615bb85da07b33b9e3e",
+    "prm800k/grading/math_normalize.py": "13998bf8c35bdc8a76868c84e1704a78567e2552557fda69027cc186568d3a4d",
+    "prm800k/io.py": "c94079aa461dbde89a6903720c04102efd207a5a5d1ff1c38141a89f50709f98",
+    "prm800k/model.py": "6e2ef1754d5530f1543ccbc0395a50227518121d64d288e43ff2c9db08ed6f28",
+    "prm800k/report.py": "c054f185ebdc94ef1b4ed61fdb15ef760e9387055cc0fe89fae18030372d96f7",
+    "prm800k/scoring.py": "5411f1a2ea3ab9294f0699b82a1086644889ccb505f7252da1ad3f344753d024",
+    "prm800k/supervision.py": "85c5975a4bb3407b6a15eee75e1a76135512b6203c69f3a5326941baab8070fe",
+    "prm800k/training.py": "6bbfd93564275f4e7961d9a0759e8f50246a687dd4ea82c0a6d20a2efaa0bc72",
+    "scripts/analyze_official.py": "ab2923d864fcdee9e9022ffdbe99ba7d1bad096d94d2587e3891296d50724ec6",
+    "scripts/build_fixtures.py": "eb4e970770fa43849e90a9e498815abef2de3ea040019bf89daf4b5f2ab1ace1",
+    "scripts/download_scores.py": "b735b32377ce0e5a8d587f1c2c49ba9c46cccbe3d7ca84e2f4db08aeedad259b",
+    "scripts/enrich_metrics.py": "2c0e87125e044c3e4e23b0cd79da317b393d79cb6a01d9bc1b6531156378bd18",
+    "scripts/record_demo.py": "555685fb54fdddd1732fffb766eccf37a2b5d71c0e8a61bd997ce3190c17bed3",
+    "scripts/validate_artifacts.py": "905e4aef77f676e8fe02fc73ab5b638f977e78687a855b5eda97a9fef82b3284",
+    "scripts/validate_report.py": "011ebfb3966f27edddd48e161d8be01423a6e695a16a8dd53390223859ce325d",
+    "tests/test_cli.py": "98e2134013acdcc8deef144a4f817b7b2ba90ce1434020b4b8cf443657f32ad8",
+    "tests/test_data.py": "1c51cdcab767b5e5adc4be2066f64f87114c65a5fe3125dc4ba0df45294d4c02",
+    "tests/test_evaluation.py": "8043a4ff735ad5377e1bacf7a1825567849524a1ceb4978f60d0958b639e95e7",
+    "tests/test_models.py": "ff16b82e7c2d0ccb3f6353a88469dc9fca14015db4842cd81bc64761e440c38b"
+  }
+}

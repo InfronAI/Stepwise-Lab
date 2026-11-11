@@ -1,0 +1,7 @@
+{
+  "exact_mean": 0.6919981498612396,
+  "problems": 500,
+  "tied_winning_answer_groups": 1,
+  "normalization": "upstream math_normalize.normalize_answer",
+  "policy": "full population; ties uniformly averaged, no correctness-based tie breaking"
+}

@@ -1,0 +1,15 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "device": "mps",
+  "seconds": 7.702869583852589,
+  "seed": 42,
+  "max_new_tokens": 256,
+  "samples_per_problem": 1,
+  "adapter": null,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "greedy": true,
+  "dtype": "float32",
+  "input_sha256": "c590f5df98e6014f80f904ca7c83e7d8cd3733381ef2a9fd32e9333fdd890893"
+}

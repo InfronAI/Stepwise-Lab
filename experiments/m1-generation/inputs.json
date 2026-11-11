@@ -1,0 +1,7 @@
+{
+  "source": "experiments/m1-generation/scored.jsonl.gz",
+  "sha256": "d6456020a28281e088ba03a061e02fe12b7eb39f38252396fbefb510892b140a",
+  "population": null,
+  "methods": "prm,orm,majority",
+  "ns": "1,2,4"
+}

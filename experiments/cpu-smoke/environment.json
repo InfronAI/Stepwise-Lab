@@ -1,0 +1,16 @@
+{
+  "platform": "macOS-26.6.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.11.16",
+  "packages": {
+    "prm800k": "0.2.0",
+    "numpy": "2.4.6",
+    "torch": "2.15.0",
+    "sympy": "1.14.0",
+    "matplotlib": "3.11.2",
+    "transformers": "4.57.6"
+  },
+  "device": "cpu",
+  "base_git_commit": "7ecc794703b2877f63226f2477a49b34f9b25163",
+  "total_seconds": 3.99932733271271
+}

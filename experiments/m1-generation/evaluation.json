@@ -1,0 +1,171 @@
+{
+  "ns": [
+    1,
+    2,
+    4
+  ],
+  "methods": {
+    "prm": {
+      "mean": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "std": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "monte_carlo_standard_error": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_mean": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "orm": {
+      "mean": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "std": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "monte_carlo_standard_error": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_mean": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "majority": {
+      "mean": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "std": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "monte_carlo_standard_error": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "breakdowns": {
+    "subject": {},
+    "level": {},
+    "generator_difficulty": {
+      "quintile_1_hardest_first": {
+        "problems": 1,
+        "methods": {
+          "prm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "orm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "majority": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "quintile_2_hardest_first": {
+        "problems": 1,
+        "methods": {
+          "prm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "orm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "majority": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    }
+  },
+  "problems": 2,
+  "population_slots": 8,
+  "trials": 100,
+  "seed": 42,
+  "seconds": 0.0017423746176064014,
+  "per_problem": [
+    {
+      "problem": "Convert the point $(0,3)$ in rectangular coordinates to polar coordinates.  Enter your answer in the form $(r,\\theta),$ where $r > 0$ and $0 \\le \\theta < 2 \\pi.$",
+      "stored_samples": 4,
+      "population": 4,
+      "answer_correct_samples": 0,
+      "subject": null,
+      "level": null,
+      "prm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "orm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "majority": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "problem": "Define\n\\[p = \\sum_{k = 1}^\\infty \\frac{1}{k^2} \\quad \\text{and} \\quad q = \\sum_{k = 1}^\\infty \\frac{1}{k^3}.\\]Find a way to write\n\\[\\sum_{j = 1}^\\infty \\sum_{k = 1}^\\infty \\frac{1}{(j + k)^3}\\]in terms of $p$ and $q.$",
+      "stored_samples": 4,
+      "population": 4,
+      "answer_correct_samples": 0,
+      "subject": null,
+      "level": null,
+      "prm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "orm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "majority": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "protocol": "without replacement; missing/answerless generations fail; shared draws across methods and N; uniform score ties",
+  "uncertainty": "std is subsampling variability, not a confidence interval over the population of math problems"
+}

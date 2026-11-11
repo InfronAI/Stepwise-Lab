@@ -1,234 +1,243 @@
-# PRM800K: A Process Supervision Dataset
+# Stepwise Lab
 
-#### [[Blog Post]](https://openai.com/research/improving-mathematical-reasoning-with-process-supervision) [[Paper]](https://arxiv.org/abs/2305.20050)
+**English** | [简体中文](README.zh-CN.md)
 
-This repository accompanies the paper [Let's Verify Step by Step](https://arxiv.org/abs/2305.20050) and presents the PRM800K dataset introduced there. PRM800K is a process supervision dataset containing 800,000 step-level correctness labels for model-generated solutions to problems from the [MATH](https://github.com/hendrycks/math) dataset. More information on PRM800K and the project can be found in the paper.
+A process supervision toolkit for Apple Silicon Macs, extending PRM800K with local reward model training, best-of-N reasoning evaluation, reproducible experiments, and interactive reports.
 
-We are releasing the raw labels as well as the instructions we gave labelers during phase 1 and phase 2 of the project. Example labels can be seen in the image below.
+A runnable extension of OpenAI's [PRM800K release](https://github.com/openai/prm800k), accompanying [Let's Verify Step by Step](https://arxiv.org/abs/2305.20050). Train a process reward model (PRM), compare it with an outcome reward model (ORM), inspect step probabilities, and evaluate best-of-N search on an M1 Mac.
 
-<p align="center">
-    <img src="prm800k/img/interface.png" height="300"/>
-</p>
+The original dataset, labeling instructions, mathematical answer grader and evaluation semantics are preserved. Original large dataset objects remain hosted by OpenAI; `.lfsconfig` preserves upstream downloads while keeping pushes directed at Stepwise Lab. The original README is archived in [docs/UPSTREAM_README.md](docs/UPSTREAM_README.md).
 
+**Reproduction scope:** the full local workflow works on Apple Silicon. Small local models implement the paper's methods; they do **not** reproduce GPT-4 training or its reported accuracy. GPT-4 base/teacher weights, MathMix, and the original ORM training corpus were not released. Public-score replay is a separate experiment. See the [paper coverage audit](docs/REPRODUCTION.md).
 
-## Data
+## Demo
 
-The `data/` folder contains our labels formatted as newline-delimited lists of `json` data. The data has been uploaded with [Git LFS](https://git-lfs.com/), which you'll need to install in order to properly clone the repository.
+[![Watch the real M1 execution and interactive report](docs/media/demo-preview.png)](docs/media/demo.mp4)
 
-Each line represents 1 full solution sample and can contain many step-level labels. Here is one annotated line:
+<video src="docs/media/demo.mp4" controls muted playsinline width="960" poster="docs/media/demo-preview.png"></video>
 
+[Watch/download the MP4](docs/media/demo.mp4) · [Open the local report](experiments/m1-local/report.html) · [Experiment analysis](experiments/m1-local/ANALYSIS.md)
 
-```javascript
-{
-  // UUID representing a particular labeler.
-  "labeler": "340d89bc-f5b7-45e9-b272-909ba68ee363",
+The video records an actual CLI training run followed by report interactions. No simulated results or remote inference. GitHub may show the download link instead of an inline player; open the report locally to interact with it.
 
-  // The timestamp this trajectory was submitted.
-  "timestamp": "2023-01-22T04:34:27.052924",
+## Quick start on M1 / M2 / M3 / M4
 
-  // In phase 2, we split our data collection into generations, using our best
-  // PRM so far to pick which solutions to score in the next generation.
-  // In phase 1, this value should always be null.
-  "generation": 9,
-
-  // In each generation, we reserve some solutions for quality control. We serve
-  // these solutions to every labeler, and check that they agree with our
-  // gold labels.
-  "is_quality_control_question": false,
-
-  // generation -1 was reserved for a set of 30 questions we served every
-  // labeler in order to screen for base task performance.
-  "is_initial_screening_question": false,
-
-  // Metadata about the question this solution is a response to.
-  "question": {
-    // Text of the MATH problem being solved.
-    "problem": "What is the greatest common factor of $20 !$ and $200,\\!000$?  (Reminder: If $n$ is a positive integer, then $n!$ stands for the product $1\\cdot 2\\cdot 3\\cdot \\cdots \\cdot (n-1)\\cdot n$.)",
-    // Ground truth solution from the MATH dataset.
-    "ground_truth_solution": "The prime factorization of $200,000$ is $2^6 \\cdot 5^5$. Then count the number of factors of $2$ and $5$ in $20!$. Since there are $10$ even numbers, there are more than $6$ factors of $2$. There are $4$ factors of $5$. So the greatest common factor is $2^6 \\cdot 5^4=\\boxed{40,\\!000}$.",
-    // Ground truth answer.
-    "ground_truth_answer": "40,\\!000",
-
-    // The full steps of the model-generated solution. This is only set for
-    // phase 2 where we pre-generated all solutions that we labeled.
-    "pre_generated_steps": [
-      "I want to find the largest positive integer that divides both $20 !$ and $200,\\!000$ evenly.",
-      "One way to do this is to factor both numbers into prime factors and look for the common ones.",
-      "I know that $200,\\!000 = 2^5\\cdot 10^4 = 2^9\\cdot 5^4$.",
-      "To find the prime factorization of $20 !$, I can use the fact that it is the product of all the positive integers from $1$ to $20$.",
-      "For each prime number $p$ between $1$ and $20$, I can count how many multiples of $p$ are in that range.",
-      "For example, there are $10$ multiples of $2$ between $1$ and $20$, namely $2, 4, 6, \\dots, 20$.",
-      "But there are also $5$ multiples of $4$, which is $2^2$, and $2$ multiples of $8$, which is $2^3$, and $1$ multiple of $16$, which is $2^4$.",
-      "So, the total power of $2$ in $20 !$ is $10 + 5 + 2 + 1 = 18$.",
-      "Similarly, there are $4$ multiples of $5$, namely $5, 10, 15, 20$, so the power of $5$ in $20 !$ is $4$.",
-      "There are $6$ multiples of $3$, namely $3, 6, 9, \\dots, 18$, but there are also $2$ multiples of $9$, which is $3^2$, so the power of $3$ in $20 !$ is $6 + 2 = 8$.",
-      "There are $2$ multiples of $7$, namely $7$ and $14$, so the power of $7$ in $20 !$ is $2$.",
-      "There are $1$ multiple of each of the other prime numbers $11, 13, 17$, and $19$, so the powers of those primes in $20 !$ are $1$ each.",
-      "Therefore, the prime factorization of $20 !$ is $2^{18}\\cdot 3^8\\cdot 5^4\\cdot 7^2\\cdot 11\\cdot 13\\cdot 17\\cdot 19$.",
-      "To find the greatest common factor of $20 !$ and $200,\\!000$, I need to take the lowest power of each common prime factor.",
-      "The only common prime factors are $2$ and $5$, and the lowest powers are $9$ and $4$, respectively.",
-      "So, the greatest common factor is $2^9\\cdot 5^4 = 512\\cdot 625 = 320,\\!000$.\n\n# Answer\n\n320,000"
-    ],
-    // The answer given as the end of the pre-generated solution. We can see
-    // this solution is incorrect.
-    "pre_generated_answer": "320,000",
-    // The score given by our PRM to this solution. This one isn't rated very
-    // highly!
-    "pre_generated_verifier_score": 0.010779580529581414
-  },
-
-  // The human data we collected for this solution, containing correctness
-  // labels for each step of the solution.
-  "label": {
-    "steps": [
-      // Each object here represents labels for one step of the solution.
-      {
-        // Each step will contain one or more completions. These are candidate
-        // steps the model output at this step of the trajectory. In phase 1,
-        // we frequently collect labels on alternative steps, while in phase 2
-        // we only collect labels on alternative steps after the first mistake,
-        // so most completions lists are singletons.
-        "completions": [
-          {
-            // Text of the step.
-            "text": "I want to find the largest positive integer that divides both $20 !$ and $200,\\!000$ evenly.",
-            // The rating the labeler gave to this step. Can be -1, 0, or +1.
-            // This is a 0 because it isn't incorrect, but it does not make
-            // any progress.
-            "rating": 0,
-            // The labeler can flag steps that they don't know how to label.
-            // This is rarely used.
-            "flagged": null
-          }
-        ],
-        // In phase 1, if all completions were rated -1, we allowed labelers to
-        // write their own +1 step. This is null for all steps in phase 2.
-        "human_completion": null,
-        // The index of the completion "chosen" at this step, or null if the
-        // human_completion was used. You can reconstruct the solution
-        // trajectory like:
-        // [
-        //     step["human_completion"] if step["chosen_completion"] is None
-        //     else step["completions"][step["chosen_completion"]]["text"]
-        //     for step in labeled_solution["label"]["steps"]
-        // ]
-        "chosen_completion": 0
-      },
-      {
-        "completions": [
-          {
-            "text": "One way to do this is to factor both numbers into prime factors and look for the common ones.",
-            "rating": 0,
-            "flagged": null
-          }
-        ],
-        "human_completion": null,
-        "chosen_completion": 0
-      },
-      {
-        // Some steps contain multiple alternative completions, and each one
-        // gets a rating.
-        "completions": [
-          {
-            "text": "I know that $200,\\!000 = 2^5\\cdot 10^4 = 2^9\\cdot 5^4$.",
-            "rating": -1,
-            "flagged": null
-          },
-          {
-            "text": "To factor $20 !$, I can use the fact that every factorial is a multiple of every number less than or equal to it.",
-            "rating": 0,
-            "flagged": false
-          },
-          {
-            "text": "I can use a factor tree to find the prime factors of $200,\\!000$: $200,\\!000 = 2^5\\cdot 10^4 = 2^5\\cdot 2^4\\cdot 5^4 = 2^9\\cdot 5^4$.",
-            "rating": -1,
-            "flagged": false
-          },
-          {
-            "text": "I can use a factor tree to find the prime factors of $200,\\!000$.",
-            "rating": 0,
-            "flagged": false
-          },
-          {
-            "text": "To factor $20 !$, I can use the fact that any factorial is divisible by all the primes less than or equal to the input.",
-            "rating": 0,
-            "flagged": false
-          }
-        ],
-        "human_completion": null,
-        "chosen_completion": null
-      }
-    ],
-    // Total time in milliseconds spent on labeling this solution.
-    "total_time": 278270,
-    // Final result of labeling this solution. Will be one of:
-    //   - "found_error": In phase 2 we stop labeling a solution after the
-    //                    first error is found.
-    //   - "solution": We reached a step that concluded in the correct answer
-    //                 to the problem.
-    //   - "bad_problem": The labeler reported the problem as broken.
-    //   - "give_up": The labeler was stuck (the problem was taking too long,
-    //                or the instructions were unclear) and moved onto the
-    //                next problem.
-    "finish_reason": "found_error"
-  }
-}
-```
-
-
-## Instructions
-
-The `instructions/` folder contains the instructions documents we gave to
-labelers during each phase of the project.
-
-
-## Answer Grading
-
-The `grading/` folder contains the python grading logic we used for determining if a model-outputted answer correctly matched
-the ground truth answer in Hendrycks' MATH dataset. We build off of Hendrycks' math normalization logic in `math_normalize.py`
-and use sympy to check for equality of expressions in `grader.py`. We recommend using `grader.grade_answer(model_answer, gt_answer)`
-where both answers are strings to determine if a solution is correct or not.
-
-Answer grading is difficult in general. This grading logic is designed to be conservative and will sometimes reject correct
-answers, though it does so less frequently than the normalization logic from MATH. Our logic might sometimes admit incorrect
-answers, though we've put effort into minimizing this.
-
-
-## MATH Splits
-
-As explained in Let's Verify Step by Step, we use a nonstandard MATH train/test split.
-
-> In order to avoid the risk of over-fitting on the 7,500 MATH training problems, we expanded the training set to include 4,500 MATH test split problems. We therefore evaluate our models only on the remaining 500 held-out problems. We selected these 500 test problems uniformly at random, and we believe they are representative of the test set as a whole.
-
-The `math_splits/` folder contains our selected splits in the `train.jsonl` and `test.jsonl` files. You'll need [Git LFS](https://git-lfs.com/) to properly clone these files.
-
-
-## Scored Samples
-
-We release all large-scale model samples used to evaluate the large-scale ORM and PRM, corresponding to Figure 3 in the paper. Each test problem has to 1860 scored samples. Solutions that failed to reach an answer within 1024 tokens were discarded, resulting in less than 1860 samples on some problems. We account for this in the best-of-N evaluation logic. 
-
-Evaluate the PRM:
+Use **native arm64 Python 3.11**, preferably on macOS 14 or newer. The checked-in run used an **M1 Pro, 16 GiB RAM, macOS 26.6.1, Python 3.11.16, PyTorch 2.15.0**. No CUDA, paid API or cloud credentials are needed.
 
 ```bash
-python eval/eval.py --method prm
+# Install Python 3.11 with your preferred installer, then:
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/InfronAI/Stepwise-Lab.git
+cd Stepwise-Lab
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[train,dev]'
+prm800k doctor
+prm800k demo --device auto --output experiments/runs/my-demo
+open experiments/runs/my-demo/report.html
 ```
 
-Evaluate the ORM:
+The default experiment is **offline after installation**: it includes a small, hash-traceable subset of the real release. It trains both models, scores held-out solutions, compares eight selection policies, exports active-learning selections and synthetic labels, and writes a report. The recorded run took **23.3 seconds** on this M1 Pro; elapsed time varies with hardware and concurrent work. `--device cpu` provides a complete fallback; `--device mps` fails clearly when Metal is unavailable. Existing demo directories are protected against accidental overwrite.
+
+To reproduce the recorded dependency environment:
 
 ```bash
-python eval/eval.py --method orm
+python -m pip install -r requirements-m1.lock.txt
+python -m pip install -e . --no-deps
+pytest -q
 ```
 
+The lock records the tested macOS/Python environment, including optional generation/video dependencies. The portable dependency ranges live in `pyproject.toml`.
 
-## Citation
+## What is implemented
 
-Please use the below BibTeX entry to cite this dataset:
+| Capability | Implementation |
+|---|---|
+| Data ingestion | Streaming JSONL/gzip/HTTPS; helpful LFS-pointer errors; pinned downloads with SHA-256 checks |
+| Annotation semantics | All labeled alternatives, chosen-prefix reconstruction, human replacements, three classes, QC/unfinished filtering, first-error boundary |
+| PRM training | Causal transformer; cross-entropy at each labeled step endpoint; no ground-truth answer in the model input |
+| ORM training | Final-answer labels on every solution token; final-token inference |
+| PRM ranking | Log-domain probability product; neutral-as-positive default; all four product/minimum × neutral policies |
+| Local generation | Frozen Qwen2.5-0.5B-Instruct with pinned revision; float32 CPU/MPS; no remote model execution |
+| Generator adaptation | Memory-bounded LoRA SFT on answer-correct solutions; optional adaptation on supplied mathematical text |
+| Synthetic supervision | Teacher negative-probability threshold 0.2; stop at first error; process and teacher-outcome targets |
+| Active acquisition | 80% convincing wrong answers + 20% highest-scoring remaining candidates; per-problem/global budgets |
+| Matched ablations | Process vs teacher-outcome vs answer-outcome; active vs uniform at equal budgets; multiple seeds |
+| Evaluation | PRM, ORM, majority, random and oracle; missing generations preserved; exact score-selection expectations and seeded Monte Carlo |
+| Artifacts | Checkpoints, source hashes, splits, raw predictions, confusion matrices, curves, analysis, HTML and recorded MP4 |
 
+This project studies reward-model training and search. Generator reinforcement learning is outside the original paper's scope.
+
+## Data flow
+
+```mermaid
+flowchart LR
+    A[Official PRM800K annotations] --> B[Verify hashes and filter QC]
+    B --> C[Split by problem]
+    C --> D[Chosen prefixes and alternative step labels]
+    C --> E[Complete solutions and final-answer labels]
+    D --> F[Train causal PRM]
+    E --> G[Train causal ORM]
+    H[Held-out released solutions or local generation] --> I[Score candidates]
+    F --> I
+    G --> I
+    I --> J[Best-of-N and majority voting]
+    J --> K[JSON metrics, plots and HTML report]
+    I --> L[Teacher labels and active acquisition]
+    L --> M[Training pool only]
+    M --> F
 ```
+
+## Structure and execution flow
+
+```mermaid
+flowchart TD
+    CLI[prm800k CLI] --> Doctor[doctor: CPU and MPS diagnostics]
+    CLI --> Data[download / audit / index]
+    CLI --> Demo[demo: offline end-to-end experiment]
+    CLI --> Gen[finetune / generate]
+    CLI --> Ablate[synthetic-labels / active-select / ablate]
+    Demo --> Train[training.py + model.py]
+    Demo --> Score[scoring.py]
+    Gen --> Score
+    Score --> Eval[evaluation.py]
+    Data --> Eval
+    Eval --> Report[report.py]
+    Report --> Files[experiments: reproducible artifacts]
+    Files --> Video[scripts/record_demo.py]
+```
+
+```text
+prm800k/
+  assets.py, io.py, data.py       # ingestion, integrity, annotation semantics
+  model.py, training.py          # small causal PRM / ORM, MPS / CPU
+  generation.py, finetuning.py   # optional open-model generation and LoRA
+  scoring.py, supervision.py     # probability aggregation and acquisition
+  evaluation.py, ablations.py    # disk-backed replay and matched experiments
+  experiment.py, report.py       # full local run and interactive analysis
+  fixtures/                     # real offline subsets + provenance manifest
+  data/, math_splits/            # original LFS assets, paths preserved
+  grading/, instructions/, img/  # upstream resources
+experiments/                    # checked-in measurements and model artifacts
+scripts/                        # rebuild fixtures, record video, download scores
+configs/                        # documented experiment recipes
+tests/                         # semantic, numeric, packaging and model checks
+docs/                          # coverage audit, methodology and demo video
+```
+
+## Saved experiments
+
+| Experiment | Evidence | Interpretation |
+|---|---|---|
+| M1 local PRM/ORM | [Analysis](experiments/m1-local/ANALYSIS.md), [metrics](experiments/m1-local/evaluation.json), [environment](experiments/m1-local/environment.json) | 32 held-out problems / 184 candidate solutions; functional local training |
+| Synthetic and active ablations | [Analysis](experiments/m1-ablations/ANALYSIS.md) | Three seeds; weak local teacher, not the paper's teacher |
+| Fresh local generation | [Inputs and outputs](experiments/m1-generation) | Two official held-out problems; fixed open-model revision |
+| Short generation budget | [192-token outputs](experiments/m1-generation-192tokens) | Failed/incomplete attempts retained, not silently dropped |
+| Local generator adaptation | [SFT and math adapters](experiments/m1-sft) | Four correct SFT examples and two text-adaptation examples; execution smoke tests |
+| Official Figure 3 score replay | [Analysis](experiments/official-replay/ANALYSIS.md) | Released scores; no retraining of the original models |
+
+At N=4 the small local PRM achieved **25.42%**, ORM **28.66%**, and sampled majority voting **35.88%** on this small, biased candidate subset. **The local PRM did not outperform ORM.** These are not benchmark claims. In particular, ORM validation accuracy of 93.02% equals its majority-class baseline; inspect balanced accuracy, macro-F1 and confusion matrices. Context truncation and class imbalance are quantified in the saved training files.
+
+## Run individual stages
+
+```bash
+# Audit annotations or fetch full official labels (~456 MB for phase2_train).
+prm800k audit prm800k/fixtures/train.jsonl.gz --output experiments/runs/audit.json
+prm800k download phase1_train phase2_train phase2_test math_test
+
+# A problem-disjoint validation split is created unless --validation is supplied.
+prm800k train --train prm800k/fixtures/train.jsonl.gz --kind prm \
+  --device mps --output experiments/runs/prm
+prm800k train --train prm800k/fixtures/train.jsonl.gz --kind orm \
+  --device mps --output experiments/runs/orm
+
+# Candidate schema and training details:docs/METHODOLOGY.md.
+prm800k score --input experiments/m1-generation/generated.jsonl.gz \
+  --prm experiments/m1-local/prm.pt --orm experiments/m1-local/orm.pt \
+  --output experiments/runs/scored.jsonl.gz
+prm800k evaluate --input experiments/runs/scored.jsonl.gz \
+  --ns 1,2,4 --method prm,orm,majority --output experiments/runs/evaluation
+
+prm800k ablate --teacher experiments/m1-local/prm.pt --device mps \
+  --seeds 42,43,44 --pool-limit 96 --output experiments/runs/ablations
+```
+
+### Fresh local generation and adaptation
+
+The first model download is approximately 1 GB. Float32 generation and LoRA consume more memory than the tiny offline demo; the recorded host has 16 GiB. Run these stages sequentially on smaller machines.
+
+```bash
+python -m pip install -e '.[generate,finetune]'
+prm800k generate --input experiments/m1-generation/problems.jsonl.gz \
+  --model Qwen/Qwen2.5-0.5B-Instruct \
+  --revision 7ae557604adf67be50417f59c2c2f167def9a775 \
+  --device mps --samples 4 --max-new-tokens 768 \
+  --output experiments/runs/generated.jsonl.gz
+
+prm800k finetune --input experiments/m1-sft/correct_solutions.jsonl.gz \
+  --revision 7ae557604adf67be50417f59c2c2f167def9a775 \
+  --device mps --max-examples 4 --output experiments/runs/adapter
+# Then add --adapter experiments/runs/adapter to the generate command.
+# --mode math accepts JSONL objects with a "text" field for supplied math text.
+```
+
+Use `--local-files-only` for generation after downloading the pinned base. The generator receives only the problem; ground-truth answers are used afterward for grading. The default demonstration reuses released candidates, exactly as the upstream evaluation does; it does not download or run Qwen implicitly.
+
+### Replay the public paper scores
+
+The complete run processed **500 problems / 815,632 candidates** and reproduced
+**PRM 78.2% / ORM 72.4% at N=1860**. A compressed projection of **all** evaluation
+rows is included, so this check can also run offline. The four Appendix F PRM
+variants also match (78.2%, 77.6%, 77.4%, 77.8%). Our explicitly normalized
+majority baseline is 69.20%, versus 69.6% in the paper; the original voting
+implementation was not released, and that discrepancy is documented:
+
+```bash
+prm800k index --input experiments/official-replay/scores.jsonl.gz --output .cache/offline-scores.sqlite
+prm800k evaluate --database .cache/offline-scores.sqlite --population 1860 \
+  --ns 10,100,1000,1860 --method prm,orm --output experiments/runs/offline-replay
+```
+
+The official file is **2,159,374,091 bytes**. A compact SQLite index avoids retaining all solution text in RAM. The parallel downloader verifies the published Azure Content-MD5; label downloads verify upstream LFS SHA-256.
+
+```bash
+python scripts/download_scores.py
+prm800k index --input .cache/data/scored.jsonl --output .cache/scored.sqlite
+prm800k evaluate --database .cache/scored.sqlite --population 1860 \
+  --ns 1,10,25,50,100,200,500,1000,1860 --method prm,orm \
+  --trials 400 --output experiments/runs/official
+```
+
+Alternatively, `prm800k index` streams directly from the public HTTPS endpoint. Downloads and SQLite files stay in `.cache/`; compact results and provenance belong in `experiments/`. **Always use `--population 1860` for the official release:** absent/incomplete generations must still count as attempts. Generic candidate files default to their stored count per problem; every requested N must fit every problem.
+
+Exact means analytically integrate sampling without replacement and score ties. Monte Carlo uses paired draws across methods and N; each marginal distribution matches the original shuffle-based evaluator. Its standard deviation measures subsampling variability, not a population confidence interval. See [methodology](docs/METHODOLOGY.md) for formulas, validation and limits.
+
+## Development and troubleshooting
+
+```bash
+make test
+make lint
+python -m build
+# Optional: record another real execution; requires Chrome and ffmpeg.
+python -m pip install -e '.[video]'
+python scripts/record_demo.py --run-dir experiments/runs/another-video
+```
+
+- **MPS unavailable:** `prm800k doctor` should report `arm64`. Avoid a Rosetta/x86 Python. CPU mode runs the same pipeline.
+- **Git LFS pointer error:** use `prm800k download ...` or install Git LFS and run `git lfs pull`. The offline fixture needs neither.
+- **Insufficient memory:** use the demo first; reduce training `--context`, `--batch-size`, `--max-examples`. Full-data training streams annotations and uses bounded reservoir sampling; increase `--max-examples` deliberately.
+- **No final answer:** raise generation `--max-new-tokens`. Missing answers remain failures and are exported.
+- **Report on GitHub:** download/open `report.html` alongside its SVG files, or serve the experiment directory locally. GitHub shows HTML source rather than executing it.
+- **Original grader:** use `from prm800k.grading.grader import grade_answer`. It remains conservative and may reject equivalent answers; it is not a proof system or an arbitrary-code sandbox.
+
+## License and citation
+
+Original code/data release: [MIT](LICENSE). Optional model weights retain their own license; [Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct) is distributed separately. Cite the original work when using PRM800K:
+
+```bibtex
 @article{lightman2023lets,
-      title={Let's Verify Step by Step}, 
-      author={Lightman, Hunter and Kosaraju, Vineet and Burda, Yura and Edwards, Harri and Baker, Bowen and Lee, Teddy and Leike, Jan and Schulman, John and Sutskever, Ilya and Cobbe, Karl},
-      journal={arXiv preprint arXiv:2305.20050},
-      year={2023}
+  title={Let's Verify Step by Step},
+  author={Lightman, Hunter and Kosaraju, Vineet and Burda, Yura and Edwards, Harri and Baker, Bowen and Lee, Teddy and Leike, Jan and Schulman, John and Sutskever, Ilya and Cobbe, Karl},
+  journal={arXiv preprint arXiv:2305.20050},
+  year={2023}
 }
 ```

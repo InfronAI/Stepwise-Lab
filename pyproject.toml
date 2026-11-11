@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prm800k"
+version = "0.2.0"
+description = "Stepwise Lab: local process supervision, reward model training and reproducible reasoning evaluation on Apple Silicon"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["numpy>=1.26,<3", "sympy>=1.12,<2", "pylatexenc==2.10", "matplotlib>=3.8,<4"]
+
+[project.urls]
+Repository = "https://github.com/InfronAI/Stepwise-Lab"
+Documentation = "https://github.com/InfronAI/Stepwise-Lab#readme"
+
+[project.optional-dependencies]
+train = ["torch>=2.4,<3"]
+generate = ["torch>=2.4,<3", "transformers>=4.45,<5"]
+finetune = ["torch>=2.4,<3", "transformers>=4.45,<5", "peft>=0.13,<1"]
+dev = ["pytest>=8,<10", "ruff>=0.8", "build>=1"]
+video = ["playwright>=1.48", "pillow>=10", "imageio-ffmpeg>=0.5"]
+
+[project.scripts]
+prm800k = "prm800k.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["prm800k*"]
+
+[tool.setuptools.package-data]
+prm800k = ["fixtures/*.json", "fixtures/*.jsonl.gz"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+extend-exclude = ["prm800k/grading/math_normalize.py", "prm800k/grading/grader.py"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

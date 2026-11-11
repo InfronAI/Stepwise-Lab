@@ -1,0 +1,77 @@
+{
+  "kind": "prm",
+  "config": {
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "context": 256,
+    "classes": 3
+  },
+  "device": "mps",
+  "seed": 42,
+  "epochs": 2,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "parameters": 133251,
+  "seconds": 0.45228562457486987,
+  "training_examples": 143,
+  "validation_examples": 53,
+  "truncated_training_examples": 91,
+  "truncated_validation_examples": 25,
+  "train_validation_overlap": 0,
+  "history": [
+    {
+      "balanced_accuracy": 0.8649425506591797,
+      "macro_f1": 0.866209864616394,
+      "majority_class_baseline": 0.5471698113207547,
+      "epoch": 1,
+      "train_loss": 0.899598007852381,
+      "validation_loss": 0.4859817151753408,
+      "validation_accuracy": 0.8679245283018868,
+      "confusion_matrix": [
+        [
+          20,
+          0,
+          4
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          26
+        ]
+      ]
+    },
+    {
+      "balanced_accuracy": 0.5660919547080994,
+      "macro_f1": 0.5015673637390137,
+      "majority_class_baseline": 0.5471698113207547,
+      "epoch": 2,
+      "train_loss": 0.5044480047442697,
+      "validation_loss": 0.45567548724840273,
+      "validation_accuracy": 0.6037735849056604,
+      "confusion_matrix": [
+        [
+          4,
+          0,
+          20
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          28
+        ]
+      ]
+    }
+  ],
+  "scope": "Small randomly initialized causal model; not a reproduction of GPT-4 quality."
+}

@@ -1,0 +1,8 @@
+{
+  "rows": 815632,
+  "problems": 500,
+  "source_sha256": "46a01478dceefe8194304f9e2db92fedefab8c8cc47033a9d7e059f3b18c5f82",
+  "sha256": "52fdaa65213a679443a87f5633508120d982cb745f04d7aa407f9260344cc57c",
+  "bytes": 19859574,
+  "projection": "problem, answer, is_correct, prm_score, orm_score, subject, level; all released rows retained"
+}

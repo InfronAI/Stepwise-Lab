@@ -1,0 +1,17 @@
+{
+  "mode": "sft",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "device": "mps",
+  "seed": 42,
+  "epochs": 1,
+  "context": 256,
+  "examples": 4,
+  "loss": [
+    0.8726755827665329
+  ],
+  "seconds": 9.3647027076222,
+  "trainable_parameters": 540672,
+  "scope": "LoRA local substitute; not the original GPT-4 full-parameter adaptation",
+  "input_sha256": "98f9eef8416e5eee86d27c0fd5adaa8922f950553c12c7e7deb8d166ed824087"
+}

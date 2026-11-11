@@ -1,0 +1,13 @@
+{
+  "best_of": 1860,
+  "problems": 500,
+  "exact_means": {
+    "product_neutral_positive": 0.782,
+    "minimum_neutral_positive": 0.776,
+    "product_neutral_negative": 0.774,
+    "minimum_neutral_negative": 0.778
+  },
+  "max_recomputed_vs_released_prm_score_difference": 0.0,
+  "steps_with_omitted_zero_classes": 10,
+  "max_probability_mass_error": 3.3306690738754696e-16
+}

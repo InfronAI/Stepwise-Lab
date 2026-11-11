@@ -1,0 +1,27 @@
+{
+  "tests": {
+    "passed": 36,
+    "result": "....................................                                     [100%]\n36 passed in 2.34s"
+  },
+  "ruff": "All checks passed",
+  "compileall": "passed",
+  "wheel": "built and installed in an isolated venv; imported from /private/tmp; 768 packaged fixture rows and original grading checked",
+  "browser": {
+    "desktop": "passed",
+    "mobile": "passed",
+    "javascript_errors": 0,
+    "problem_and_candidate_selection": "passed"
+  },
+  "offline_replay": {
+    "source": "experiments/official-replay/scores.jsonl.gz",
+    "rows": 815632,
+    "problems": 500,
+    "prm_best_of_1860": 0.782,
+    "orm_best_of_1860": 0.724
+  },
+  "video": {
+    "format": "H.264 / yuv420p",
+    "size": "1440x1000",
+    "sha256": "1c20d57f985c0e03e8344478d7a27cfcd52e4c9447a4b1537c07c777cf6e60d4"
+  }
+}

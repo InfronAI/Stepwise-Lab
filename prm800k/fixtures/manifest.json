@@ -1,0 +1,30 @@
+{
+  "upstream_commit": "7ecc794703b2877f63226f2477a49b34f9b25163",
+  "seed": 42,
+  "sources": {
+    "phase1_train": {
+      "sha256": "e9da6a73f827ffb9a8c0dc644c541d34ed76b3d4d1e4896ff5f7b37ddf5ae34d",
+      "expected_sha256": "e9da6a73f827ffb9a8c0dc644c541d34ed76b3d4d1e4896ff5f7b37ddf5ae34d",
+      "eligible_rows": 808
+    },
+    "phase2_train": {
+      "sha256": "1110237feeb51d1bc200cb37b8f965cfdc1036eac7d506094049366fe7dc1089",
+      "expected_sha256": "1110237feeb51d1bc200cb37b8f965cfdc1036eac7d506094049366fe7dc1089",
+      "eligible_rows": 73983
+    },
+    "phase2_test": {
+      "sha256": "6b172efa884ac8341a946dd82e06947c135b7254109fb3f7aa907c715d98aaad",
+      "expected_sha256": "6b172efa884ac8341a946dd82e06947c135b7254109fb3f7aa907c715d98aaad"
+    }
+  },
+  "selection": "train: reservoir of usable rows (128 phase1 + 640 phase2); test: 32 random problems with >=4 usable rows, all their candidates",
+  "train_rows": 768,
+  "test_rows": 184,
+  "test_problems": 32,
+  "train_test_overlap": 0,
+  "minimum_test_candidates": 4,
+  "files": {
+    "train.jsonl.gz": "01d421b17a1df258dc6697117d8eb2b9b723d280aa233140a9a92b3ce24864d5",
+    "test.jsonl.gz": "1d0d222bac496a8028063e7a197a67db8bf3220dfed25f8df47be1c34609bcde"
+  }
+}

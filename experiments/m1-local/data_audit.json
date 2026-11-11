@@ -1,0 +1,22 @@
+{
+  "/Users/apple/Projects/prm800k/prm800k/fixtures/train.jsonl.gz": {
+    "rows": 768,
+    "usable_rows": 768,
+    "solution": 216,
+    "rating_0": 1877,
+    "rating_-1": 4090,
+    "rating_1": 7121,
+    "found_error": 552,
+    "problems": 736
+  },
+  "/Users/apple/Projects/prm800k/prm800k/fixtures/test.jsonl.gz": {
+    "rows": 184,
+    "usable_rows": 184,
+    "found_error": 137,
+    "rating_1": 1260,
+    "rating_-1": 393,
+    "rating_0": 135,
+    "solution": 47,
+    "problems": 32
+  }
+}

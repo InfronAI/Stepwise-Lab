@@ -1,0 +1,10 @@
+1/6 Read official-data fixtures and split by problem
+2/6 Train PRM on positive / neutral / negative step labels
+PRM epoch 1/2: loss=0.9686, validation=0.567
+PRM epoch 2/2: loss=0.9435, validation=0.538
+3/6 Train ORM on final-answer labels at every solution token
+ORM epoch 1/1: loss=0.4290, validation=0.930
+4/6 Score complete held-out solutions
+5/6 Evaluate best-of-N and all four PRM scoring policies
+6/6 Acquire training candidates, export synthetic labels and report
+Completed in 25.6s. Report: /Users/apple/Projects/prm800k/experiments/runs/release-video/report.html

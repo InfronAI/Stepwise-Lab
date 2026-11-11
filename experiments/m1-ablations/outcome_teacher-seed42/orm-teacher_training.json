@@ -1,0 +1,44 @@
+{
+  "kind": "orm-teacher",
+  "config": {
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "context": 256,
+    "classes": 2
+  },
+  "device": "mps",
+  "seed": 42,
+  "epochs": 1,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "parameters": 133186,
+  "seconds": 0.16606191592290998,
+  "training_examples": 96,
+  "validation_examples": 24,
+  "truncated_training_examples": 96,
+  "truncated_validation_examples": 24,
+  "train_validation_overlap": 0,
+  "history": [
+    {
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0,
+      "majority_class_baseline": 1.0,
+      "epoch": 1,
+      "train_loss": 0.41054662068684894,
+      "validation_loss": 0.09835054725408554,
+      "validation_accuracy": 1.0,
+      "confusion_matrix": [
+        [
+          24,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    }
+  ],
+  "scope": "Small randomly initialized causal model; not a reproduction of GPT-4 quality."
+}

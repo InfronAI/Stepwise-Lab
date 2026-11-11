@@ -1,0 +1,12 @@
+{
+  "seed": 42,
+  "epochs": 2,
+  "max_examples": 6000,
+  "model": {
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "context": 256,
+    "classes": 3
+  }
+}

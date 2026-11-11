@@ -1,0 +1,14 @@
+{
+  "adapter/README.md": "bc74b3160f5dd36d44f0e76082822bf7e355d61d21da0e4360b4be3a1b91c33f",
+  "adapter/adapter_config.json": "d888ed80440288e9228cc276bd052745689a8e44dd1dd5ef956d91d12e141ac6",
+  "adapter/adapter_model.safetensors": "8595f8d8f91eae275f0b75f718e6e4ce6134fa0fc16ca67df1ad704fffbbd740",
+  "adapter/chat_template.jinja": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+  "adapter/training.json": "8e46575f719f5e40daf4153381d488d1f7b7770bd15bd16795e4a466b9ea2d1e",
+  "correct_solutions.jsonl.gz": "98f9eef8416e5eee86d27c0fd5adaa8922f950553c12c7e7deb8d166ed824087",
+  "math-adapter/README.md": "bc74b3160f5dd36d44f0e76082822bf7e355d61d21da0e4360b4be3a1b91c33f",
+  "math-adapter/adapter_config.json": "a6e3f616be454677dda840e06e422bff17498dc13db33628d2d5c861d9c2bcf5",
+  "math-adapter/adapter_model.safetensors": "67c83b40e80ffbc49e3b70ede8b62bd0fff267dced98f062407a9a15e2320a8d",
+  "math-adapter/chat_template.jinja": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+  "math-adapter/training.json": "b3508e6330ccea7192327d216a68cf671e4c6b5cd02119300a3e4b235a2655c6",
+  "math_text.jsonl.gz": "9fd6944825d9d2360dc4570bb1bb1f2e8336db293bca4943126e13e80b5deecc"
+}

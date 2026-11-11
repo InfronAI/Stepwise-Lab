@@ -1,0 +1,51 @@
+{
+  "kind": "prm",
+  "config": {
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "context": 128,
+    "classes": 3
+  },
+  "device": "cpu",
+  "seed": 42,
+  "epochs": 1,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "parameters": 125059,
+  "seconds": 0.26480479212477803,
+  "training_examples": 256,
+  "validation_examples": 256,
+  "truncated_training_examples": 245,
+  "truncated_validation_examples": 252,
+  "train_validation_overlap": 0,
+  "history": [
+    {
+      "balanced_accuracy": 0.33112582564353943,
+      "macro_f1": 0.2463054209947586,
+      "majority_class_baseline": 0.58984375,
+      "epoch": 1,
+      "train_loss": 1.073605902493,
+      "validation_loss": 0.9319994226098061,
+      "validation_accuracy": 0.5859375,
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          77
+        ],
+        [
+          0,
+          0,
+          28
+        ],
+        [
+          0,
+          1,
+          150
+        ]
+      ]
+    }
+  ],
+  "scope": "Small randomly initialized causal model; not a reproduction of GPT-4 quality."
+}

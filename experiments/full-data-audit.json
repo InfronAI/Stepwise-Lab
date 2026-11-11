@@ -1,0 +1,35 @@
+{
+  ".cache/data/phase1_train.jsonl": {
+    "rows": 949,
+    "usable_rows": 808,
+    "solution": 808,
+    "rating_1": 17384,
+    "rating_0": 7727,
+    "rating_-1": 14964,
+    "give_up": 141,
+    "problems": 903
+  },
+  ".cache/data/phase2_train.jsonl": {
+    "rows": 97782,
+    "usable_rows": 73983,
+    "found_error": 82003,
+    "rating_1": 482081,
+    "rating_0": 64725,
+    "rating_-1": 190892,
+    "solution": 11665,
+    "give_up": 3839,
+    "bad_problem": 275,
+    "problems": 10828
+  },
+  ".cache/data/phase2_test.jsonl": {
+    "rows": 2762,
+    "usable_rows": 2664,
+    "found_error": 2077,
+    "rating_1": 17942,
+    "rating_0": 1984,
+    "rating_-1": 6048,
+    "give_up": 98,
+    "solution": 587,
+    "problems": 458
+  }
+}

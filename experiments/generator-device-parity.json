@@ -1,0 +1,6 @@
+{
+  "max_logit_difference": 0.00012111663818359375,
+  "cpu_text": "To find the product of 6 and 7, you simply multiply them together:\n\n\\[ 6 \\times 7 = 42 \\]\n\nSo, 6 times 7 equals 42.",
+  "mps_text": "To find the product of 6 and 7, you simply multiply them together:\n\n\\[ 6 \\times 7 = 42 \\]\n\nSo, 6 times 7 equals 42.",
+  "allclose": true
+}

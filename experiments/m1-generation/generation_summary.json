@@ -1,0 +1,8 @@
+{
+  "attempts": 8,
+  "problems": 2,
+  "extracted_answers": 5,
+  "correct": 0,
+  "hit_token_limit": 1,
+  "scope": "first two official test problems, not a performance benchmark"
+}
