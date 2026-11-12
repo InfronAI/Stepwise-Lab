@@ -1,0 +1,6 @@
+{
+  "records_verified_against_raw_jsonl": 101599,
+  "all_raw_sha256_match_official_release": true,
+  "all_record_sha256_match_indexes": true,
+  "all_record_objects_equal_original": true
+}

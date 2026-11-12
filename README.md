@@ -98,6 +98,11 @@ flowchart TD
     CLI --> Gen[finetune / generate]
     CLI --> Ablate[synthetic-labels / active-select / ablate]
     CLI --> Annotation[annotation-replay / annotation-ablate]
+    CLI --> Full[materialize-data / full-local]
+    Full --> Train
+    Full --> Score
+    Full --> Trace[tracing.py: every update and prediction]
+    Trace --> Files
     Annotation --> Protocol[annotation.py + protocol_experiments.py]
     Protocol --> Train
     Protocol --> Eval
@@ -138,12 +143,45 @@ docs/                          # coverage audit, methodology and demo video
 | M1 local PRM/ORM | [Analysis](experiments/m1-local/ANALYSIS.md), [metrics](experiments/m1-local/evaluation.json), [environment](experiments/m1-local/environment.json) | 32 held-out problems / 184 candidate solutions; functional local training |
 | Synthetic and active ablations | [Analysis](experiments/m1-ablations/ANALYSIS.md) | Three seeds; weak local teacher, not the paper's teacher |
 | Annotation protocols | [Analysis](experiments/annotation-protocols/ANALYSIS.md), [flow and interfaces](docs/ANNOTATION_PROTOCOLS.md) | Three paired comparisons × three seeds; 18 actual MPS training runs |
+| Complete protocol traces | [Analysis and parity](experiments/annotation-protocols-traced/ANALYSIS.md) | All 18 rerun metrics match; every update and prediction retained locally |
+| Full-data local PRM | [Analysis](experiments/full-data-local/ANALYSIS.md), [artifact map](docs/FULL_TRACE.md) | All eligible official training labels, persisted PRM reload and complete test-candidate inference |
 | Fresh local generation | [Inputs and outputs](experiments/m1-generation) | Two official held-out problems; fixed open-model revision |
 | Short generation budget | [192-token outputs](experiments/m1-generation-192tokens) | Failed/incomplete attempts retained, not silently dropped |
 | Local generator adaptation | [SFT and math adapters](experiments/m1-sft) | Four correct SFT examples and two text-adaptation examples; execution smoke tests |
 | Official Figure 3 score replay | [Analysis](experiments/official-replay/ANALYSIS.md) | Released scores; no retraining of the original models |
 
 At N=4 the small local PRM achieved **25.42%**, ORM **28.66%**, and sampled majority voting **35.88%** on this small, biased candidate subset. **The local PRM did not outperform ORM.** These are not benchmark claims. In particular, ORM validation accuracy of 93.02% equals its majority-class baseline; inspect balanced accuracy, macro-F1 and confusion matrices. Context truncation and class imbalance are quantified in the saved training files.
+
+## Complete local data and every intermediate result
+
+The complete official annotation release is now materialized locally: four raw
+JSONL files and **101,599 individual JSON records**, with source and per-record
+checksums. The full-data workflow trains a local PRM on every eligible training
+label, reloads its saved weights, and scores every complete phase-2 test candidate.
+
+```bash
+prm800k materialize-data --output datasets/prm800k
+prm800k full-local --device mps --dataset datasets/prm800k \
+  --epochs 1 --context 128 --width 32 --batch-size 64 \
+  --output experiments/runs/full-local
+python scripts/validate_full_trace.py --run experiments/runs/full-local
+python scripts/summarize_full_trace.py experiments/runs/full-local
+```
+
+Raw files: `datasets/prm800k/raw/`. Individual records:
+`datasets/prm800k/records/<phase>/<shard>/<record>.json`.
+The recorded run is in `experiments/full-data-local/`. Its `details/` directory
+retains every batch's ordered inputs, logits/loss, raw and clipped gradients,
+updated weights and AdamW state, every validation prediction, every test prefix
+and its score, and every evaluation draw/winner. No checkpoint rotation is used.
+
+These full traces require several GB locally. Raw/expanded data and bulky step
+archives stay inside the local project; Git tracks manifests, record indexes,
+final weights, results and representative previews. See the [artifact map and
+reproduction instructions](docs/FULL_TRACE.md). The model remains a small local
+transformer, not the original private GPT-4 PRM. Use `--trace` with
+`annotation-ablate`, `train`, `score` or `evaluate` to retain their intermediate
+results as well.
 
 ## Annotation workflows and experiments
 

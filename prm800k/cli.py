@@ -39,12 +39,14 @@ def parser():
     train.add_argument('--layers', type=int, default=2)
     train.add_argument('--batch-size', type=int, default=32)
     train.add_argument('--max-examples', type=int, default=12000)
+    train.add_argument('--trace', action='store_true', help='Save every optimizer update, gradient and forward result')
     score = sub.add_parser('score', help='Predict PRM/ORM scores for candidate JSONL')
     score.add_argument('--input', required=True)
     score.add_argument('--prm', required=True)
     score.add_argument('--orm')
     score.add_argument('--output', required=True)
     score.add_argument('--device', choices=['auto', 'mps', 'cpu'], default='auto')
+    score.add_argument('--trace', action='store_true')
     index = sub.add_parser('index', help='Stream released scores into a compact SQLite database')
     index.add_argument('--input', default='https://openaipublic.blob.core.windows.net/process-supervision/scored-test-samples.jsonl')
     index.add_argument('--output', default='.cache/scored.sqlite')
@@ -59,6 +61,7 @@ def parser():
     evaluate.add_argument('--trials', type=int, default=100)
     evaluate.add_argument('--seed', type=int, default=42)
     evaluate.add_argument('--output', required=True)
+    evaluate.add_argument('--trace', action='store_true')
     active = sub.add_parser('active-select', help='Select convincing wrong-answer TRAINING candidates')
     active.add_argument('--input', required=True)
     active.add_argument('--output', required=True)
@@ -113,9 +116,21 @@ def parser():
     protocols.add_argument('--families', default='phase1_branches,phase2_error_label,synthetic_horizon')
     protocols.add_argument('--train-input')
     protocols.add_argument('--test-input')
+    protocols.add_argument('--trace', action='store_true')
     replay = sub.add_parser('annotation-replay', help='Replay annotation state transitions from released JSONL')
     replay.add_argument('--input', required=True)
     replay.add_argument('--output', required=True)
+    materialize = sub.add_parser('materialize-data', help='Download all official label files and export every record as individual JSON')
+    materialize.add_argument('--output', default='datasets/prm800k')
+    full = sub.add_parser('full-local', help='Full official training-label coverage, local PRM and complete test inference with every intermediate saved')
+    full.add_argument('--dataset', default='datasets/prm800k')
+    full.add_argument('--output', required=True)
+    full.add_argument('--device', choices=['auto', 'mps', 'cpu'], default='auto')
+    full.add_argument('--seed', type=int, default=42)
+    full.add_argument('--epochs', type=int, default=1)
+    full.add_argument('--context', type=int, default=128)
+    full.add_argument('--width', type=int, default=32)
+    full.add_argument('--batch-size', type=int, default=64)
     return root
 
 
@@ -163,13 +178,15 @@ def dispatch(args):
         write_json(Path(args.output)/'inputs.json', {'files': {p: sha256(p) for p in args.train+(args.validation or [])}, 'split': 'explicit' if args.validation else 'SHA-256 problem split, 20% validation', 'seed': args.seed})
         train(rows, validation, args.output, kind=args.kind, device=args.device, seed=args.seed,
               epochs=args.epochs, config=ModelConfig(context=args.context, width=args.width, layers=args.layers),
-              batch_size=args.batch_size, max_examples=args.max_examples)
+              batch_size=args.batch_size, max_examples=args.max_examples,
+              trace_dir=Path(args.output)/'trace' if args.trace else None)
     elif command == 'score':
         from .model import load_model
         from .scoring import score_candidates
         prm, _ = load_model(args.prm, args.device)
         orm = load_model(args.orm, args.device)[0] if args.orm else None
-        write_jsonl(args.output, score_candidates(read_jsonl(args.input), prm, orm))
+        write_jsonl(args.output, score_candidates(read_jsonl(args.input), prm, orm,
+                    trace_dir=Path(str(args.output)+'.trace') if args.trace else None))
         from .io import sha256
         write_json(Path(args.output).with_suffix('.scoring.json'), {'input_sha256': sha256(args.input), 'prm_sha256': sha256(args.prm), 'orm_sha256': sha256(args.orm) if args.orm else None, 'device': args.device})
     elif command == 'index':
@@ -181,7 +198,8 @@ def dispatch(args):
         samples = list(read_jsonl(args.input)) if args.input else []
         groups = indexed_groups(args.database) if args.database else sorted(group_samples(samples).items())
         result = evaluate(groups, [int(x) for x in args.ns.split(',')], population=args.population,
-                          methods=args.method.split(','), trials=args.trials, seed=args.seed)
+                          methods=args.method.split(','), trials=args.trials, seed=args.seed,
+                          trace_dir=Path(args.output)/'trace' if args.trace else None)
         print(render_report(args.output, result, samples, title='PRM800K · Precomputed-score evaluation' if args.database else 'PRM800K · Candidate evaluation'))
         from .io import sha256
         source = args.database or args.input
@@ -206,7 +224,15 @@ def dispatch(args):
         run_protocol_experiments(args.output, device=args.device, seeds=tuple(int(x) for x in args.seeds.split(',')),
             split_seed=args.split_seed, budget=args.budget, epochs=args.epochs, context=args.context,
             batch_size=args.batch_size, teacher_path=args.teacher, teacher_pool_limit=args.teacher_pool_limit,
-            threshold=args.threshold, families=args.families.split(','), train_path=args.train_input, test_path=args.test_input)
+            threshold=args.threshold, families=args.families.split(','), train_path=args.train_input, test_path=args.test_input,
+            trace=args.trace)
+    elif command == 'materialize-data':
+        from .datasets import materialize
+        materialize(args.output)
+    elif command == 'full-local':
+        from .full_experiment import full_experiment
+        full_experiment(args.output, args.dataset, device=args.device, seed=args.seed, epochs=args.epochs,
+                        context=args.context, width=args.width, batch_size=args.batch_size)
     elif command == 'finetune':
         from .finetuning import finetune
         metadata = finetune(read_jsonl(args.input), args.output, mode=args.mode, model_name=args.model, revision=args.revision, device=args.device, epochs=args.epochs, context=args.context, max_examples=args.max_examples)

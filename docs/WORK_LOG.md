@@ -54,3 +54,24 @@ family tests synthetic full-trajectory versus first-error supervision. Frozen
 examples, state traces, source hashes, checkpoints, predictions and bilingual
 analysis are retained. Negative selection outcomes are reported without claims
 of general inferiority or statistical significance.
+
+The full-recording follow-up materializes all four official annotation files as
+101,599 individual JSON objects, retaining raw JSONL and per-record hashes. The
+full local run uses 619,636 training and 158,137 validation step labels without a
+reservoir cap, trains the width-32/context-128 PRM for one epoch on MPS, reloads
+the persisted checkpoint, and scores 2,664 complete test candidates across
+457 problems (33,864 step predictions). Every one of 9,682 updates retains
+weights, AdamW moments, raw/clipped gradients and loss-bearing outputs.
+
+The previous 18 protocol conditions were rerun with the same complete tracing;
+their exact best-of-N results match the previous runs. The verification tools
+compare every extracted JSON object with its official source, reconstruct
+optimizer transitions, verify sample/epoch coverage, recompute inference on CPU
+and replay evaluation selections. Full multi-GB traces and raw expanded data
+stay in the local project; source/record indexes, manifests, final models,
+every-update CSV, figures, analysis, verification and previews are versioned.
+
+The full-data model remains weak: validation accuracy 64.67% is close to the
+63.91% majority baseline, macro-F1 is 0.311, and best-of-4 on the fixed
+451-problem cohort is 22.96%, below its exact N=1 rate of 24.11%. Recording a
+complete local training run does not establish paper-scale model capability.

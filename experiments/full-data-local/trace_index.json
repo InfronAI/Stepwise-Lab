@@ -1,0 +1,15 @@
+{
+  "local_trace_files": 22952,
+  "local_trace_bytes": 6704020221,
+  "checkpoint_count": 9683,
+  "optimizer_updates": 9682,
+  "training_examples": 619636,
+  "validation_examples": 158137,
+  "test_candidates": 2664,
+  "test_step_predictions": 33864,
+  "local_data": "../../datasets/prm800k",
+  "local_intermediates": "details",
+  "published_preview": "preview",
+  "all_update_metrics": "training_steps.csv",
+  "scope": "All algorithm-stage results and update states retained locally; hidden-layer activations are not dumped"
+}

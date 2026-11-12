@@ -1,0 +1,95 @@
+{
+  "supervised_tokens_per_epoch": 1024,
+  "optimizer_steps": 64,
+  "initial_backbone_sha256": "e715c8b242df3cafd69e14a8d5e601d455b3ad4af3c8aaae5f15af5e610a679d",
+  "kind": "prm",
+  "config": {
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "context": 256,
+    "classes": 3
+  },
+  "device": "mps",
+  "seed": 43,
+  "epochs": 2,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "parameters": 133251,
+  "seconds": 14.110251833219081,
+  "training_examples": 1024,
+  "validation_examples": 1097,
+  "truncated_training_examples": 823,
+  "truncated_validation_examples": 983,
+  "train_validation_overlap": 0,
+  "history": [
+    {
+      "balanced_accuracy": 0.33936700224876404,
+      "macro_f1": 0.23203374445438385,
+      "majority_class_baseline": 0.45487693710118504,
+      "epoch": 1,
+      "train_loss": 0.9885664414614439,
+      "validation_loss": 1.0657092358920395,
+      "validation_accuracy": 0.4585232452142206,
+      "confusion_matrix": [
+        [
+          13,
+          0,
+          377
+        ],
+        [
+          5,
+          1,
+          202
+        ],
+        [
+          8,
+          2,
+          489
+        ]
+      ]
+    },
+    {
+      "balanced_accuracy": 0.3388327658176422,
+      "macro_f1": 0.23024898767471313,
+      "majority_class_baseline": 0.45487693710118504,
+      "epoch": 2,
+      "train_loss": 0.934448104351759,
+      "validation_loss": 1.0631269619697425,
+      "validation_accuracy": 0.45396536007292615,
+      "confusion_matrix": [
+        [
+          3,
+          0,
+          387
+        ],
+        [
+          2,
+          6,
+          200
+        ],
+        [
+          5,
+          5,
+          489
+        ]
+      ]
+    }
+  ],
+  "scope": "Small randomly initialized causal model; not a reproduction of GPT-4 quality.",
+  "family": "phase1_branches",
+  "condition": "all_candidates",
+  "training_examples_sha256": "527096eef6f5cf56c8160987b83d81027e354e12f899e359ea429af8ab60658b",
+  "validation_examples_sha256": "2e8d49e60f36d5088da6dd0a1a0286cba604de28c6160d07c697efc3c3d6aceb",
+  "label_origins": {
+    "human": 993,
+    "human_replacement": 31
+  },
+  "post_error_targets": 0,
+  "trace": {
+    "directory": "experiments/annotation-protocols-traced/phase1_branches/all_candidates-seed43/trace/training",
+    "optimizer_updates": 64,
+    "checkpoint_count": 65,
+    "manifest_sha256": "996146b213464302b31ab9e9807829d90af29de22819ab30fd2c21b6a973625d"
+  }
+}

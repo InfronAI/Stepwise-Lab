@@ -97,6 +97,11 @@ flowchart TD
     CLI --> Gen[finetune / generate]
     CLI --> Ablate[synthetic-labels / active-select / ablate]
     CLI --> Annotation[annotation-replay / annotation-ablate]
+    CLI --> Full[materialize-data / full-local]
+    Full --> Train
+    Full --> Score
+    Full --> Trace[tracing.py: 逐更新与逐预测记录]
+    Trace --> Files
     Annotation --> Protocol[annotation.py + protocol_experiments.py]
     Protocol --> Train
     Protocol --> Eval
@@ -137,12 +142,40 @@ docs/                           # 方法、复现审计与视频
 | M1 本地 PRM/ORM | [分析](experiments/m1-local/ANALYSIS.md)、[指标](experiments/m1-local/evaluation.json)、[环境](experiments/m1-local/environment.json) | 32 道独立测试题、184 个完整候选；验证本地训练链路 |
 | 合成监督与主动采样 | [分析](experiments/m1-ablations/ANALYSIS.md) | 三个随机种子；使用本地弱教师 |
 | 标注流程对照 | [中文分析](experiments/annotation-protocols/ANALYSIS.zh-CN.md)、[流程与接口](docs/ANNOTATION_PROTOCOLS.md) | 三组配对实验 × 三个种子，共 18 次 MPS 训练 |
+| 完整对照追踪 | [中文分析与一致性检查](experiments/annotation-protocols-traced/ANALYSIS.zh-CN.md) | 18 次重跑指标与原运行一致；本地保留全部更新和预测 |
+| 全量数据本地 PRM | [中文分析](experiments/full-data-local/ANALYSIS.zh-CN.md)、[产物说明](docs/FULL_TRACE.md) | 全部可用官方训练标签，重载本地权重并完成测试候选推理 |
 | 新解答生成 | [输入与输出](experiments/m1-generation) | 两道官方测试题，固定开放模型版本 |
 | 短生成预算 | [192 token 实验](experiments/m1-generation-192tokens) | 保留未完成解答和失败结果 |
 | 生成器适配 | [SFT 与数学文本适配](experiments/m1-sft) | 4 个正确 SFT 样本、2 个文本样本；仅验证执行链路 |
 | 官方 Figure 3 评分重放 | [分析](experiments/official-replay/ANALYSIS.md) | 使用公开分数，不表示重新训练了原始模型 |
 
 本地小样本在 N=4 时，PRM 为 **25.42%**，ORM 为 **28.66%**，随机试验的多数投票均值为 **35.88%**。**本地小 PRM 没有超过 ORM**，这不构成完整基准结论。ORM 的 93.02% 验证准确率与多数类基线相同；请结合平衡准确率、macro-F1 和混淆矩阵查看。训练文件记录了上下文截断与类别不平衡。
+
+## 完整本地数据与逐步中间结果
+
+官方四个原始 JSONL 文件已下载到本地，并逐条拆成 **101,599 个独立 JSON 文件**，
+记录源文件和每条 JSON 的哈希。全量流程使用全部可用训练标签训练本地 PRM，
+重新加载保存的权重，再对第二阶段测试集的全部完整候选逐步推理。
+
+```bash
+prm800k materialize-data --output datasets/prm800k
+prm800k full-local --device mps --dataset datasets/prm800k \
+  --epochs 1 --context 128 --width 32 --batch-size 64 \
+  --output experiments/runs/full-local
+python scripts/validate_full_trace.py --run experiments/runs/full-local
+python scripts/summarize_full_trace.py experiments/runs/full-local
+```
+
+原始文件位于 `datasets/prm800k/raw/`，逐条 JSON 位于
+`datasets/prm800k/records/<阶段>/<分片>/<记录>.json`。
+本次完整运行保存在 `experiments/full-data-local/`，其中 `details/` 包含每批次
+的输入顺序、logits、损失、裁剪前后梯度、更新后的权重和 AdamW 状态，以及每轮
+逐样本验证、测试候选每个前缀的预测与累计分数、每次评估抽样和胜出候选。不会自动轮换删除。
+
+完整记录会占用数 GB 本地磁盘。原始／展开数据及较大的逐步状态保留在项目本地，
+Git 同步来源清单、记录索引、最终权重、结果和代表性预览。详见[中间产物路径与复现说明](docs/FULL_TRACE.md)。
+模型仍是本地小型 Transformer，不等同于原论文的私有 GPT-4 PRM。
+`annotation-ablate`、`train`、`score`、`evaluate` 也支持 `--trace` 保存中间结果。
 
 ## 标注流程与对照实验
 

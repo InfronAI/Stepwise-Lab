@@ -1,0 +1,9 @@
+{
+  "traced_training_runs": 18,
+  "optimizer_updates": 864,
+  "saved_training_states": 882,
+  "local_trace_files": 6082,
+  "local_trace_bytes": 2077651218,
+  "exact_metrics_unchanged": true,
+  "full_traces_are_local": true
+}

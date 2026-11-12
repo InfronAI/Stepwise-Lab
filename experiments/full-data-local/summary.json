@@ -1,0 +1,28 @@
+{
+  "environment": {
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.11.16",
+    "packages": {
+      "prm800k": "0.2.0",
+      "numpy": "2.4.6",
+      "torch": "2.15.0",
+      "sympy": "1.14.0",
+      "matplotlib": "3.11.2",
+      "transformers": "4.57.6"
+    },
+    "device": "mps",
+    "base_git_commit": "32f0d4c9a3b15a35df983147766edb43564182ee"
+  },
+  "seconds": 1683.5470569580793,
+  "training_examples": 619636,
+  "validation_examples": 158137,
+  "optimizer_updates": 9682,
+  "test_candidates": 2664,
+  "test_step_predictions": 33864,
+  "test_problems": 457,
+  "best_of_n_cohort_problems": 451,
+  "available_candidate_top_selection_accuracy": 0.23413566739606126,
+  "checkpoint_sha256": "ec6fd08ae8c4179b02bd2b474d26f407ef842f902fb1451713dbe6faa3913b4f",
+  "scope": "Full released training-label coverage; small randomly initialized local PRM, not GPT-4 reproduction"
+}

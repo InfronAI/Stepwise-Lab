@@ -14,6 +14,7 @@ unreleased weights, datasets or the original compute budget.
 | Paper component | Original repository | Added implementation | Evidence / limitation |
 |---|---|---|---|
 | Human process annotations | Released as LFS data | Verified download, streaming audit, real offline fixture | Source hashes and subset-selection recipe in `prm800k/fixtures/manifest.json` |
+| Full local data and execution evidence | Raw LFS labels; no trainer | All 101,599 label records materialized as individual JSON; uncapped local training and complete phase-2 candidate inference | Small byte-transformer substitute; every update/gradient/state and inference prefix is retained locally, with immutable manifests and a source snapshot |
 | Alternative steps and human replacement | Raw schema only | Correct chosen-history expansion, flagged/unrated filtering, object/string human replacements | Semantic tests plus full official-data audit |
 | Interactive phase 1 / first-error phase 2 | Released records and instructions | Explicit review state machine, deterministic replay, three paired protocol experiments | 952 official records replayed; 18 MPS training runs plus CPU fallback. Human post-error labels are unavailable; full-trajectory comparison uses identified synthetic labels only |
 | Three-class process supervision | No trainer | Causal endpoint loss, positive/neutral/negative targets | MPS and CPU checkpoints and actual loss histories |

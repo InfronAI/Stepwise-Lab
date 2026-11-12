@@ -1,0 +1,19 @@
+{
+  "individual_raw_json_records_verified": 101599,
+  "artifact_hashes_verified": 22988,
+  "training": {
+    "optimizer_transitions_replayed": 9682,
+    "maximum_cpu_replay_parameter_difference": 2.384185791015625e-07,
+    "training_examples": 619636,
+    "validation_examples": 158137,
+    "epoch_coverage_complete": true,
+    "validation_confusion_recomputed": true
+  },
+  "inference_and_evaluation": {
+    "test_candidates_recomputed_on_cpu": 2664,
+    "test_steps_checked": 33864,
+    "maximum_cpu_mps_probability_difference": 4.470348358154297e-07,
+    "all_selection_draws_replayed": true
+  },
+  "seconds": 501.1632223329507
+}

@@ -98,7 +98,7 @@ def _validate_teacher_split(metadata, inputs_path, training, validation, testing
 def run_protocol_experiments(output, *, device='auto', seeds=(42, 43, 44), split_seed=42,
                              budget=1024, epochs=2, context=256, batch_size=32,
                              teacher_path=None, teacher_pool_limit=96, threshold=0.2,
-                             families=None, train_path=None, test_path=None):
+                             families=None, train_path=None, test_path=None, trace=False):
     if not seeds or len(set(seeds)) != len(seeds):
         raise ValueError('Provide distinct, nonempty training seeds')
     if min(budget, epochs, batch_size, teacher_pool_limit) < 1 or context < 32:
@@ -133,6 +133,7 @@ def run_protocol_experiments(output, *, device='auto', seeds=(42, 43, 44), split
     config = {'seeds': list(seeds), 'split_seed': split_seed, 'budget': budget, 'epochs': epochs,
               'batch_size': batch_size, 'model': asdict(ModelConfig(context=context)), 'families': families,
               'teacher_pool_limit': teacher_pool_limit, 'teacher_threshold': threshold,
+              'trace_every_update': trace,
               'teacher_sha256': sha256(teacher_path) if teacher_path else None}
     write_json(output/'config.json', config)
     # Freeze exact source rows and replay every actual input trajectory, including
@@ -171,15 +172,15 @@ def run_protocol_experiments(output, *, device='auto', seeds=(42, 43, 44), split
         receipt['teacher_sha256'] = sha256(teacher_path)
         write_json(output/'teacher_provenance.json', receipt)
         rng = random.Random(split_seed)
-        def frozen_pool(rows):
+        def frozen_pool(rows, name):
             eligible = list(candidates(rows))
             selected = rng.sample(eligible, min(teacher_pool_limit, len(eligible)))
-            scored = score_candidates(selected, teacher)
+            scored = score_candidates(selected, teacher, trace_dir=output/'teacher_trace'/name if trace else None)
             for sample in scored:
                 sample['teacher_sha256'] = config['teacher_sha256']
             return scored
         print('Scoring fixed training/validation candidates with the frozen local teacher', flush=True)
-        synthetic_train, synthetic_val = frozen_pool(training), frozen_pool(validation)
+        synthetic_train, synthetic_val = frozen_pool(training, 'train'), frozen_pool(validation, 'validation')
         write_jsonl(output/'teacher_train_predictions.jsonl.gz', synthetic_train)
         write_jsonl(output/'teacher_validation_predictions.jsonl.gz', synthetic_val)
         pools['synthetic_horizon'] = (list(teacher_examples(synthetic_train, threshold=threshold)),
@@ -214,11 +215,13 @@ def run_protocol_experiments(output, *, device='auto', seeds=(42, 43, 44), split
                               'label_origins': stats['label_origins'], 'post_error_targets': stats['post_error_targets']}
                 print(f'{family}/{condition}, seed={seed}, targets={len(examples)}, problems={stats["problems"]}', flush=True)
                 model, metadata = train_steps(examples, validation_examples, run, device=str(device), seed=seed,
-                                              epochs=epochs, batch_size=batch_size, config=ModelConfig(context=context), metadata=provenance)
+                                              epochs=epochs, batch_size=batch_size, config=ModelConfig(context=context), metadata=provenance,
+                                              trace_dir=run/'trace/training' if trace else None)
                 paired_metadata.append(metadata)
-                scored = score_candidates(test_candidates, model)
+                scored = score_candidates(test_candidates, model, trace_dir=run/'trace/inference' if trace else None)
                 write_jsonl(run/'scored.jsonl.gz', scored)
-                metrics = evaluate(sorted(group_samples(scored).items()), ns, methods=['prm'], trials=100, seed=split_seed)
+                metrics = evaluate(sorted(group_samples(scored).items()), ns, methods=['prm'], trials=100, seed=split_seed,
+                                   trace_dir=run/'trace/evaluation' if trace else None)
                 write_json(run/'evaluation.json', metrics)
                 results.append({'family': family, 'condition': condition, 'seed': seed,
                                 'training_examples': len(examples), 'optimizer_steps': metadata['optimizer_steps'],

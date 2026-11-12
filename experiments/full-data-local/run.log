@@ -1,0 +1,134 @@
+Stage: verify_data_and_split_by_problem
+WARNING: Error in configuration: macro '\frac' failed its substitution!
+WARNING: Error in configuration: macro '\frac' failed its substitution!
+WARNING: Error in configuration: macro '\frac' failed its substitution!
+WARNING: Error in configuration: macro '\frac' failed its substitution!
+Stage: project_encode_and_train_prm
+PRM epoch 1: update 100, examples 6400/619636
+PRM epoch 1: update 200, examples 12800/619636
+PRM epoch 1: update 300, examples 19200/619636
+PRM epoch 1: update 400, examples 25600/619636
+PRM epoch 1: update 500, examples 32000/619636
+PRM epoch 1: update 600, examples 38400/619636
+PRM epoch 1: update 700, examples 44800/619636
+PRM epoch 1: update 800, examples 51200/619636
+PRM epoch 1: update 900, examples 57600/619636
+PRM epoch 1: update 1000, examples 64000/619636
+PRM epoch 1: update 1100, examples 70400/619636
+PRM epoch 1: update 1200, examples 76800/619636
+PRM epoch 1: update 1300, examples 83200/619636
+PRM epoch 1: update 1400, examples 89600/619636
+PRM epoch 1: update 1500, examples 96000/619636
+PRM epoch 1: update 1600, examples 102400/619636
+PRM epoch 1: update 1700, examples 108800/619636
+PRM epoch 1: update 1800, examples 115200/619636
+PRM epoch 1: update 1900, examples 121600/619636
+PRM epoch 1: update 2000, examples 128000/619636
+PRM epoch 1: update 2100, examples 134400/619636
+PRM epoch 1: update 2200, examples 140800/619636
+PRM epoch 1: update 2300, examples 147200/619636
+PRM epoch 1: update 2400, examples 153600/619636
+PRM epoch 1: update 2500, examples 160000/619636
+PRM epoch 1: update 2600, examples 166400/619636
+PRM epoch 1: update 2700, examples 172800/619636
+PRM epoch 1: update 2800, examples 179200/619636
+PRM epoch 1: update 2900, examples 185600/619636
+PRM epoch 1: update 3000, examples 192000/619636
+PRM epoch 1: update 3100, examples 198400/619636
+PRM epoch 1: update 3200, examples 204800/619636
+PRM epoch 1: update 3300, examples 211200/619636
+PRM epoch 1: update 3400, examples 217600/619636
+PRM epoch 1: update 3500, examples 224000/619636
+PRM epoch 1: update 3600, examples 230400/619636
+PRM epoch 1: update 3700, examples 236800/619636
+PRM epoch 1: update 3800, examples 243200/619636
+PRM epoch 1: update 3900, examples 249600/619636
+PRM epoch 1: update 4000, examples 256000/619636
+PRM epoch 1: update 4100, examples 262400/619636
+PRM epoch 1: update 4200, examples 268800/619636
+PRM epoch 1: update 4300, examples 275200/619636
+PRM epoch 1: update 4400, examples 281600/619636
+PRM epoch 1: update 4500, examples 288000/619636
+PRM epoch 1: update 4600, examples 294400/619636
+PRM epoch 1: update 4700, examples 300800/619636
+PRM epoch 1: update 4800, examples 307200/619636
+PRM epoch 1: update 4900, examples 313600/619636
+PRM epoch 1: update 5000, examples 320000/619636
+PRM epoch 1: update 5100, examples 326400/619636
+PRM epoch 1: update 5200, examples 332800/619636
+PRM epoch 1: update 5300, examples 339200/619636
+PRM epoch 1: update 5400, examples 345600/619636
+PRM epoch 1: update 5500, examples 352000/619636
+PRM epoch 1: update 5600, examples 358400/619636
+PRM epoch 1: update 5700, examples 364800/619636
+PRM epoch 1: update 5800, examples 371200/619636
+PRM epoch 1: update 5900, examples 377600/619636
+PRM epoch 1: update 6000, examples 384000/619636
+PRM epoch 1: update 6100, examples 390400/619636
+PRM epoch 1: update 6200, examples 396800/619636
+PRM epoch 1: update 6300, examples 403200/619636
+PRM epoch 1: update 6400, examples 409600/619636
+PRM epoch 1: update 6500, examples 416000/619636
+PRM epoch 1: update 6600, examples 422400/619636
+PRM epoch 1: update 6700, examples 428800/619636
+PRM epoch 1: update 6800, examples 435200/619636
+PRM epoch 1: update 6900, examples 441600/619636
+PRM epoch 1: update 7000, examples 448000/619636
+PRM epoch 1: update 7100, examples 454400/619636
+PRM epoch 1: update 7200, examples 460800/619636
+PRM epoch 1: update 7300, examples 467200/619636
+PRM epoch 1: update 7400, examples 473600/619636
+PRM epoch 1: update 7500, examples 480000/619636
+PRM epoch 1: update 7600, examples 486400/619636
+PRM epoch 1: update 7700, examples 492800/619636
+PRM epoch 1: update 7800, examples 499200/619636
+PRM epoch 1: update 7900, examples 505600/619636
+PRM epoch 1: update 8000, examples 512000/619636
+PRM epoch 1: update 8100, examples 518400/619636
+PRM epoch 1: update 8200, examples 524800/619636
+PRM epoch 1: update 8300, examples 531200/619636
+PRM epoch 1: update 8400, examples 537600/619636
+PRM epoch 1: update 8500, examples 544000/619636
+PRM epoch 1: update 8600, examples 550400/619636
+PRM epoch 1: update 8700, examples 556800/619636
+PRM epoch 1: update 8800, examples 563200/619636
+PRM epoch 1: update 8900, examples 569600/619636
+PRM epoch 1: update 9000, examples 576000/619636
+PRM epoch 1: update 9100, examples 582400/619636
+PRM epoch 1: update 9200, examples 588800/619636
+PRM epoch 1: update 9300, examples 595200/619636
+PRM epoch 1: update 9400, examples 601600/619636
+PRM epoch 1: update 9500, examples 608000/619636
+PRM epoch 1: update 9600, examples 614400/619636
+PRM epoch 1/1: loss=0.8232, validation=0.647
+Stage: reload_checkpoint_and_infer_every_test_step
+Stage: rank_candidates_and_evaluate
+Stage: write_analysis_and_checksums
+{
+  "environment": {
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.11.16",
+    "packages": {
+      "prm800k": "0.2.0",
+      "numpy": "2.4.6",
+      "torch": "2.15.0",
+      "sympy": "1.14.0",
+      "matplotlib": "3.11.2",
+      "transformers": "4.57.6"
+    },
+    "device": "mps",
+    "base_git_commit": "32f0d4c9a3b15a35df983147766edb43564182ee"
+  },
+  "seconds": 1683.5470569580793,
+  "training_examples": 619636,
+  "validation_examples": 158137,
+  "optimizer_updates": 9682,
+  "test_candidates": 2664,
+  "test_step_predictions": 33864,
+  "test_problems": 457,
+  "best_of_n_cohort_problems": 451,
+  "available_candidate_top_selection_accuracy": 0.23413566739606126,
+  "checkpoint_sha256": "ec6fd08ae8c4179b02bd2b474d26f407ef842f902fb1451713dbe6faa3913b4f",
+  "scope": "Full released training-label coverage; small randomly initialized local PRM, not GPT-4 reproduction"
+}

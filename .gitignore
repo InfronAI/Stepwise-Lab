@@ -10,3 +10,8 @@ dist/
 .cache/
 experiments/runs/
 docs/media/raw/
+datasets/prm800k/raw/
+datasets/prm800k/records/
+experiments/full-data-local/details/
+experiments/annotation-protocols-traced/**/trace/
+experiments/annotation-protocols-traced/teacher_trace/

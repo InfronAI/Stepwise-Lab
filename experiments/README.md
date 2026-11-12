@@ -10,6 +10,8 @@ No experiment claims a full reproduction of the private GPT-4 training pipeline.
 | `m1-ablations` | Three seeds × five matched supervision/acquisition conditions |
 | `annotation-protocols` | Three paired annotation-policy comparisons × three seeds; 18 MPS runs, official-record state-machine replay and synthetic horizon diagnostics |
 | `annotation-cpu-smoke` | Four CPU runs verifying the two human-label protocol comparisons with smaller budgets/context |
+| `annotation-protocols-traced` | Actual rerun of all 18 annotation-protocol models with every update, validation prediction, inference prefix and selection draw recorded |
+| `full-data-local` | Uncapped training on usable official train labels, individual-JSON source records, local checkpoint reload and all complete phase-2 test candidates; every intermediate retained |
 | `m1-generation-192tokens` | Eight fresh attempts on two official MATH test problems; all truncated without final answers |
 | `m1-generation` | Same problems at 768-token budget; five extracted answers, no correct answers |
 | `m1-sft` | Actual four-example generator LoRA SFT and two-example text-adaptation execution |

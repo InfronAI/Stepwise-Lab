@@ -1,0 +1,36 @@
+{
+  "state": "complete",
+  "stages": [
+    {
+      "name": "verify_data_and_split_by_problem",
+      "state": "complete",
+      "started_at_unix": 1794466443.051232,
+      "ended_at_unix": 1794466448.880086
+    },
+    {
+      "name": "project_encode_and_train_prm",
+      "state": "complete",
+      "started_at_unix": 1794466448.880088,
+      "ended_at_unix": 1794468097.673684
+    },
+    {
+      "name": "reload_checkpoint_and_infer_every_test_step",
+      "state": "complete",
+      "started_at_unix": 1794468097.673687,
+      "ended_at_unix": 1794468125.557557
+    },
+    {
+      "name": "rank_candidates_and_evaluate",
+      "state": "complete",
+      "started_at_unix": 1794468125.557558,
+      "ended_at_unix": 1794468126.296205
+    },
+    {
+      "name": "write_analysis_and_checksums",
+      "state": "complete",
+      "started_at_unix": 1794468126.296206,
+      "ended_at_unix": 1794468126.6000361
+    }
+  ],
+  "dataset": "datasets/prm800k"
+}

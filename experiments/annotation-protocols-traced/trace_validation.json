@@ -1,0 +1,149 @@
+{
+  "runs": {
+    "phase1_branches/all_candidates-seed42": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 1024,
+      "validation_examples": 1097,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase1_branches/all_candidates-seed43": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 1024,
+      "validation_examples": 1097,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase1_branches/all_candidates-seed44": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 2.384185791015625e-07,
+      "training_examples": 1024,
+      "validation_examples": 1097,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase1_branches/chosen_path-seed42": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 1024,
+      "validation_examples": 1097,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase1_branches/chosen_path-seed43": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 2.384185791015625e-07,
+      "training_examples": 1024,
+      "validation_examples": 1097,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase1_branches/chosen_path-seed44": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 1024,
+      "validation_examples": 1097,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase2_error_label/include_first_error-seed42": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 1024,
+      "validation_examples": 892,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase2_error_label/include_first_error-seed43": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 2.384185791015625e-07,
+      "training_examples": 1024,
+      "validation_examples": 892,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase2_error_label/include_first_error-seed44": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 2.384185791015625e-07,
+      "training_examples": 1024,
+      "validation_examples": 892,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase2_error_label/mask_first_error-seed42": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 1024,
+      "validation_examples": 892,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase2_error_label/mask_first_error-seed43": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 1024,
+      "validation_examples": 892,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "phase2_error_label/mask_first_error-seed44": {
+      "optimizer_transitions_replayed": 64,
+      "maximum_cpu_replay_parameter_difference": 2.384185791015625e-07,
+      "training_examples": 1024,
+      "validation_examples": 892,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "synthetic_horizon/teacher_first_error-seed42": {
+      "optimizer_transitions_replayed": 16,
+      "maximum_cpu_replay_parameter_difference": 2.384185791015625e-07,
+      "training_examples": 225,
+      "validation_examples": 1321,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "synthetic_horizon/teacher_first_error-seed43": {
+      "optimizer_transitions_replayed": 16,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 225,
+      "validation_examples": 1321,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "synthetic_horizon/teacher_first_error-seed44": {
+      "optimizer_transitions_replayed": 16,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 225,
+      "validation_examples": 1321,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "synthetic_horizon/teacher_full_trajectory-seed42": {
+      "optimizer_transitions_replayed": 16,
+      "maximum_cpu_replay_parameter_difference": 2.384185791015625e-07,
+      "training_examples": 225,
+      "validation_examples": 1321,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "synthetic_horizon/teacher_full_trajectory-seed43": {
+      "optimizer_transitions_replayed": 16,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 225,
+      "validation_examples": 1321,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    },
+    "synthetic_horizon/teacher_full_trajectory-seed44": {
+      "optimizer_transitions_replayed": 16,
+      "maximum_cpu_replay_parameter_difference": 1.1920928955078125e-07,
+      "training_examples": 225,
+      "validation_examples": 1321,
+      "epoch_coverage_complete": true,
+      "validation_confusion_recomputed": true
+    }
+  },
+  "optimizer_transitions_replayed": 864
+}

@@ -1,0 +1,14 @@
+{
+  "examples": 225,
+  "problems": 95,
+  "trajectories": 96,
+  "labels": {
+    "-1": 168,
+    "0": 0,
+    "1": 57
+  },
+  "label_origins": {
+    "teacher": 225
+  },
+  "post_error_targets": 159
+}

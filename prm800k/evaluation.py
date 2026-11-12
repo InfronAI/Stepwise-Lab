@@ -48,7 +48,7 @@ def probability_avoid(population, excluded, n):
     return math.exp(sum(math.log1p(-excluded/(population-i)) for i in range(n)))
 
 
-def exact_problem(samples, ns, population, method):
+def exact_problem(samples, ns, population, method, details=None):
     validate_group(samples, population, ns)
     key = METHODS[method]
     usable = [s for s in samples if answer_of(s) is not None]
@@ -70,13 +70,19 @@ def exact_problem(samples, ns, population, method):
     for score in scores:
         group = tiers[score]
         fraction = sum(group)/len(group)
+        contributions = []
         for j, n in enumerate(ns):
-            result[j] += (avoid[n][above]-avoid[n][above+len(group)])*fraction
+            contribution = (avoid[n][above]-avoid[n][above+len(group)])*fraction
+            result[j] += contribution
+            contributions.append(float(contribution))
+        if details is not None:
+            details.append({'score': score, 'higher_scored_count': above, 'tier_size': len(group),
+                            'correct_in_tier': sum(group), 'ns': list(ns), 'contributions': contributions})
         above += len(group)
     return result
 
 
-def monte_carlo_problem(samples, ns, population, methods, trials, rng):
+def monte_carlo_problem(samples, ns, population, methods, trials, rng, details=None):
     validate_group(samples, population, ns)
     if trials < 1:
         raise ValueError('trials must be positive')
@@ -88,9 +94,12 @@ def monte_carlo_problem(samples, ns, population, methods, trials, rng):
         correct[i] = sample['is_correct']
         answers[i] = normalize_answer(answer_of(sample))
     order = np.stack([rng.permutation(population)[:max(ns)] for _ in range(trials)])
+    if details is not None:
+        details.update(draw_indices=order.tolist(), normalized_answers=answers, methods={})
     result = {}
     for method in methods:
         outcomes = np.zeros((trials, len(ns)), dtype=np.float64)
+        winners = np.full((trials, len(ns)), -1, dtype=int) if details is not None else None
         if method in METHODS:
             values = np.full(population, -np.inf)
             for i, sample in enumerate(samples):
@@ -103,6 +112,8 @@ def monte_carlo_problem(samples, ns, population, methods, trials, rng):
             for j, n in enumerate(ns):
                 winner = order[np.arange(trials), draws[:, :n].argmax(axis=1)]
                 outcomes[:, j] = valid[winner] & correct[winner]
+                if details is not None:
+                    winners[:, j] = np.where(valid[winner], winner, -1)
         elif method in ('majority', 'random', 'oracle'):
             for trial in range(trials):
                 for j, n in enumerate(ns):
@@ -111,21 +122,29 @@ def monte_carlo_problem(samples, ns, population, methods, trials, rng):
                         continue
                     if method == 'oracle':
                         outcomes[trial, j] = any(correct[i] for i in indices)
+                        if details is not None:
+                            winners[trial, j] = next((i for i in indices if correct[i]), indices[0])
                     elif method == 'random':
                         outcomes[trial, j] = correct[indices[0]]
+                        if details is not None:
+                            winners[trial, j] = indices[0]
                     else:
                         # Insertion order after shuffle gives random ties, no correctness-based tie breaking.
                         counts = Counter(answers[i] for i in indices)
                         answer = max(counts, key=counts.get)
                         winner = next(i for i in indices if answers[i] == answer)
                         outcomes[trial, j] = correct[winner]
+                        if details is not None:
+                            winners[trial, j] = winner
         else:
             raise ValueError(f'Unknown method: {method}')
         result[method] = outcomes
+        if details is not None:
+            details['methods'][method] = {'winner_indices': winners.tolist(), 'outcomes': outcomes.tolist()}
     return result
 
 
-def evaluate(groups, ns=(1, 2, 4, 8), *, population=None, methods=('prm', 'orm', 'majority'), trials=100, seed=42, exact=True):
+def evaluate(groups, ns=(1, 2, 4, 8), *, population=None, methods=('prm', 'orm', 'majority'), trials=100, seed=42, exact=True, trace_dir=None):
     """`groups` yields (problem, samples). Missing slots always remain in the population."""
     ns = sorted(set(ns))
     if not ns or any(n < 1 for n in ns) or trials < 1 or not methods:
@@ -134,6 +153,8 @@ def evaluate(groups, ns=(1, 2, 4, 8), *, population=None, methods=('prm', 'orm',
     if any(m not in {*METHODS, 'majority', 'random', 'oracle'} for m in methods):
         raise ValueError('Unknown evaluation method')
     rng = np.random.default_rng(seed)
+    from .tracing import TraceStore
+    trace = TraceStore(trace_dir, 'selection_evaluation') if trace_dir is not None else None
     trial_totals = {m: np.zeros((trials, len(ns))) for m in methods}
     exact_totals = {m: np.zeros(len(ns)) for m in methods if m in METHODS and exact}
     per_problem = []
@@ -144,19 +165,29 @@ def evaluate(groups, ns=(1, 2, 4, 8), *, population=None, methods=('prm', 'orm',
         count += 1
         p = population or len(samples)
         total += p
-        simulation = monte_carlo_problem(samples, ns, p, methods, trials, rng)
+        details = {} if trace else None
+        simulation = monte_carlo_problem(samples, ns, p, methods, trials, rng, details)
         record = {'problem': problem, 'stored_samples': len(samples), 'population': p,
                   'answer_correct_samples': sum(s['is_correct'] and answer_of(s) is not None for s in samples),
                   'subject': samples[0].get('subject') if samples else None,
                   'level': samples[0].get('level') if samples else None}
+        exact_details = {}
         for method in methods:
             trial_totals[method] += simulation[method]
             record[method] = simulation[method].mean(0).tolist()
             if method in exact_totals:
-                values = exact_problem(samples, ns, p, method)
+                tiers = [] if trace else None
+                values = exact_problem(samples, ns, p, method, tiers)
+                exact_details[method] = tiers
                 exact_totals[method] += values
                 record[method] = values.tolist()
         per_problem.append(record)
+        if trace:
+            trace.json(f'problems/{count:06d}.json.gz', {'problem': problem, 'population': p, 'ns': ns,
+                'candidates': [{'id': s.get('id', str(i)), 'answer': answer_of(s), 'is_correct': s['is_correct'],
+                                'scores': {m: s[key] for m, key in METHODS.items() if key in s}}
+                               for i, s in enumerate(samples)],
+                'monte_carlo': details, 'exact_score_tiers': exact_details, 'metrics': record})
     if not count:
         raise ValueError('No problems to evaluate')
     metrics = {}
@@ -176,11 +207,16 @@ def evaluate(groups, ns=(1, 2, 4, 8), *, population=None, methods=('prm', 'orm',
     ordered = sorted(per_problem, key=lambda r: (r['answer_correct_samples']/r['population'], r['problem']))
     quintiles = np.array_split(np.arange(count), min(5, count))
     breakdowns['generator_difficulty'] = {f'quintile_{i+1}_hardest_first': {'problems': len(indices), 'methods': {m: np.mean([ordered[j][m] for j in indices], axis=0).tolist() for m in methods}} for i, indices in enumerate(quintiles)}
-    return {'ns': ns, 'methods': metrics, 'breakdowns': breakdowns, 'problems': count, 'population_slots': total,
+    result = {'ns': ns, 'methods': metrics, 'breakdowns': breakdowns, 'problems': count, 'population_slots': total,
             'trials': trials, 'seed': seed, 'seconds': time.perf_counter()-start,
             'per_problem': per_problem,
             'protocol': 'without replacement; missing/answerless generations fail; shared draws across methods and N; uniform score ties',
             'uncertainty': 'std is subsampling variability, not a confidence interval over the population of math problems'}
+    if trace:
+        write_json(trace.path/'evaluation.json', result)
+        trace.finish(problems=count, trials=trials, ns=ns, methods=methods,
+                     winner_minus_one='No answer-bearing candidate; outcome remains failure')
+    return result
 
 
 def build_index(source, database, limit=None):

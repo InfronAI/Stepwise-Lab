@@ -1,0 +1,60 @@
+{
+  "supervised_tokens_per_epoch": 619636,
+  "optimizer_steps": 9682,
+  "initial_backbone_sha256": "064dfe710ee848c9d78d6b7963457c13cf5b3ec2a5a2624b582d8cbf03587359",
+  "kind": "prm",
+  "config": {
+    "width": 32,
+    "layers": 2,
+    "heads": 4,
+    "context": 128,
+    "classes": 3
+  },
+  "device": "mps",
+  "seed": 42,
+  "epochs": 1,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "parameters": 37955,
+  "seconds": 1583.9659912078641,
+  "training_examples": 619636,
+  "validation_examples": 158137,
+  "truncated_training_examples": 602914,
+  "truncated_validation_examples": 153938,
+  "train_validation_overlap": 0,
+  "history": [
+    {
+      "balanced_accuracy": 0.3546983003616333,
+      "macro_f1": 0.3114779591560364,
+      "majority_class_baseline": 0.6390534789454714,
+      "epoch": 1,
+      "train_loss": 0.8231889532300045,
+      "validation_loss": 0.8199298743793473,
+      "validation_accuracy": 0.6467493375996762,
+      "confusion_matrix": [
+        [
+          3726,
+          1,
+          38474
+        ],
+        [
+          446,
+          11,
+          14421
+        ],
+        [
+          2515,
+          5,
+          98538
+        ]
+      ]
+    }
+  ],
+  "scope": "Small randomly initialized causal model; not a reproduction of GPT-4 quality.",
+  "trace": {
+    "directory": "experiments/full-data-local/details/training",
+    "optimizer_updates": 9682,
+    "checkpoint_count": 9683,
+    "manifest_sha256": "95b7ff4d3e93eac91ceb9526f349bf1351a2ff824db2805fa5957c86a8a7b8fc"
+  }
+}

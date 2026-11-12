@@ -1,0 +1,15 @@
+{
+  "seed": 42,
+  "epochs": 1,
+  "batch_size": 64,
+  "model": {
+    "width": 32,
+    "layers": 2,
+    "heads": 4,
+    "context": 128,
+    "classes": 3
+  },
+  "device": "mps",
+  "full_training_data": true,
+  "trace_every_update": true
+}

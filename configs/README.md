@@ -9,6 +9,9 @@ metrics and generation manifests. The CLI is the source of executable defaults.
 | CPU smoke run | `prm800k demo --device cpu --epochs 1 --max-examples 256 --context 128 --output experiments/runs/cpu` |
 | Matched ablations | `prm800k ablate --teacher experiments/m1-local/prm.pt --device mps --seeds 42,43,44 --pool-limit 96 --output experiments/runs/ablations` |
 | Annotation protocols | `prm800k annotation-ablate --teacher experiments/m1-local/prm.pt --device mps --seeds 42,43,44 --budget 1024 --output experiments/runs/annotation-protocols` |
+| Materialize full official data | `prm800k materialize-data --output datasets/prm800k` |
+| Full-data local PRM with every intermediate | `prm800k full-local --device mps --epochs 1 --context 128 --width 32 --batch-size 64 --output experiments/runs/full-local` |
+| Record annotation comparisons completely | `prm800k annotation-ablate --teacher experiments/m1-local/prm.pt --device mps --seeds 42,43,44 --budget 1024 --trace --output experiments/runs/annotation-traced` |
 | Annotation CPU smoke | `prm800k annotation-ablate --device cpu --seeds 42 --budget 512 --epochs 1 --context 64 --families phase1_branches,phase2_error_label --output experiments/runs/annotation-cpu` |
 | Official replay | `prm800k evaluate --database .cache/scored.sqlite --population 1860 --ns 1,10,25,50,100,200,500,1000,1860 --method prm,orm --trials 400 --output experiments/runs/official` |
 
