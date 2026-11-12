@@ -37,3 +37,20 @@ Recorded negative outcomes are preserved: short-budget generation was truncated,
 longer stochastic generation did not solve the two selected MATH problems, and
 the tiny PRM did not exceed the local ORM. CPU/MPS Qwen parity was independently
 checked to distinguish sampling/model limitations from a device computation bug.
+
+Annotation-protocol follow-up adds an explicit phase-1/phase-2 review state
+machine and frozen-example trainer. All 952 bundled official trajectories replay
+successfully. Real records exposed two details now covered by regression tests:
+an unselected human candidate may coexist with a selected model candidate, and a
+terminal alternative may repeat the original step text with a different rating.
+Chosen indices and original completion identity, rather than text deduplication,
+determine context and targets.
+
+The new recorded experiment runs 18 MPS models across three paired comparisons
+and three seeds, plus four CPU smoke models. The comparisons equalize per-problem
+target quotas, initialization and optimizer steps. No human labels are invented
+for the 5,001 steps after first-error stops. A separately identified weak-teacher
+family tests synthetic full-trajectory versus first-error supervision. Frozen
+examples, state traces, source hashes, checkpoints, predictions and bilingual
+analysis are retained. Negative selection outcomes are reported without claims
+of general inferiority or statistical significance.

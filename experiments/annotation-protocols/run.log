@@ -1,0 +1,56 @@
+Scoring fixed training/validation candidates with the frozen local teacher
+phase1_branches/all_candidates, seed=42, targets=1024, problems=102
+PRM epoch 1/2: loss=1.0047, validation=0.448
+PRM epoch 2/2: loss=0.9402, validation=0.446
+phase1_branches/chosen_path, seed=42, targets=1024, problems=102
+PRM epoch 1/2: loss=0.0674, validation=0.455
+PRM epoch 2/2: loss=0.0013, validation=0.455
+phase1_branches/all_candidates, seed=43, targets=1024, problems=102
+PRM epoch 1/2: loss=0.9886, validation=0.459
+PRM epoch 2/2: loss=0.9344, validation=0.454
+phase1_branches/chosen_path, seed=43, targets=1024, problems=102
+PRM epoch 1/2: loss=0.0595, validation=0.455
+PRM epoch 2/2: loss=0.0015, validation=0.455
+phase1_branches/all_candidates, seed=44, targets=1024, problems=102
+PRM epoch 1/2: loss=1.0048, validation=0.453
+PRM epoch 2/2: loss=0.9427, validation=0.450
+phase1_branches/chosen_path, seed=44, targets=1024, problems=102
+PRM epoch 1/2: loss=0.0764, validation=0.455
+PRM epoch 2/2: loss=0.0015, validation=0.455
+phase2_error_label/include_first_error, seed=42, targets=1024, problems=454
+PRM epoch 1/2: loss=0.7415, validation=0.796
+PRM epoch 2/2: loss=0.6861, validation=0.796
+phase2_error_label/mask_first_error, seed=42, targets=1024, problems=454
+PRM epoch 1/2: loss=0.3807, validation=0.796
+PRM epoch 2/2: loss=0.3230, validation=0.796
+phase2_error_label/include_first_error, seed=43, targets=1024, problems=454
+PRM epoch 1/2: loss=0.7282, validation=0.796
+PRM epoch 2/2: loss=0.6873, validation=0.796
+phase2_error_label/mask_first_error, seed=43, targets=1024, problems=454
+PRM epoch 1/2: loss=0.3664, validation=0.796
+PRM epoch 2/2: loss=0.3152, validation=0.796
+phase2_error_label/include_first_error, seed=44, targets=1024, problems=454
+PRM epoch 1/2: loss=0.7100, validation=0.796
+PRM epoch 2/2: loss=0.6676, validation=0.797
+phase2_error_label/mask_first_error, seed=44, targets=1024, problems=454
+PRM epoch 1/2: loss=0.3644, validation=0.796
+PRM epoch 2/2: loss=0.3076, validation=0.793
+synthetic_horizon/teacher_first_error, seed=42, targets=225, problems=95
+PRM epoch 1/2: loss=0.6430, validation=0.923
+PRM epoch 2/2: loss=0.3547, validation=0.924
+synthetic_horizon/teacher_full_trajectory, seed=42, targets=225, problems=95
+PRM epoch 1/2: loss=0.5791, validation=0.921
+PRM epoch 2/2: loss=0.3661, validation=0.919
+synthetic_horizon/teacher_first_error, seed=43, targets=225, problems=95
+PRM epoch 1/2: loss=0.6122, validation=0.923
+PRM epoch 2/2: loss=0.3753, validation=0.919
+synthetic_horizon/teacher_full_trajectory, seed=43, targets=225, problems=95
+PRM epoch 1/2: loss=0.6394, validation=0.920
+PRM epoch 2/2: loss=0.3473, validation=0.921
+synthetic_horizon/teacher_first_error, seed=44, targets=225, problems=95
+PRM epoch 1/2: loss=0.6047, validation=0.924
+PRM epoch 2/2: loss=0.3439, validation=0.923
+synthetic_horizon/teacher_full_trajectory, seed=44, targets=225, problems=95
+PRM epoch 1/2: loss=0.5666, validation=0.922
+PRM epoch 2/2: loss=0.3623, validation=0.922
+Protocol experiments complete: experiments/annotation-protocols/ANALYSIS.zh-CN.md

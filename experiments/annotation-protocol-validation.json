@@ -1,0 +1,11 @@
+{
+  "directory": "experiments/annotation-protocols",
+  "checked_runs": 18,
+  "verified_artifact_hashes": 141,
+  "source_hashes_match": true,
+  "problem_split_overlap": 0,
+  "exact_metrics_recomputed": true,
+  "paired_problem_quotas_match": true,
+  "all_training_examples_match_source_projections": true,
+  "checkpoint_cpu_reload_max_probability_difference": 2.384185791015625e-07
+}

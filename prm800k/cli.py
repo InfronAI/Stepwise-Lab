@@ -98,6 +98,24 @@ def parser():
     tune.add_argument('--epochs', type=int, default=1)
     tune.add_argument('--context', type=int, default=256)
     tune.add_argument('--max-examples', type=int, default=32)
+    protocols = sub.add_parser('annotation-ablate', help='Paired phase-1 branches / phase-2 first-error experiments')
+    protocols.add_argument('--output', required=True)
+    protocols.add_argument('--device', choices=['auto','mps','cpu'], default='auto')
+    protocols.add_argument('--seeds', default='42,43,44')
+    protocols.add_argument('--split-seed', type=int, default=42)
+    protocols.add_argument('--budget', type=int, default=1024)
+    protocols.add_argument('--epochs', type=int, default=2)
+    protocols.add_argument('--context', type=int, default=256)
+    protocols.add_argument('--batch-size', type=int, default=32)
+    protocols.add_argument('--teacher', help='PRM checkpoint with adjacent inputs.json split provenance')
+    protocols.add_argument('--teacher-pool-limit', type=int, default=96)
+    protocols.add_argument('--threshold', type=float, default=0.2)
+    protocols.add_argument('--families', default='phase1_branches,phase2_error_label,synthetic_horizon')
+    protocols.add_argument('--train-input')
+    protocols.add_argument('--test-input')
+    replay = sub.add_parser('annotation-replay', help='Replay annotation state transitions from released JSONL')
+    replay.add_argument('--input', required=True)
+    replay.add_argument('--output', required=True)
     return root
 
 
@@ -179,6 +197,16 @@ def dispatch(args):
     elif command == 'ablate':
         from .ablations import run_ablation
         run_ablation(args.teacher, args.output, args.device, tuple(int(x) for x in args.seeds.split(',')), args.pool_limit)
+    elif command == 'annotation-replay':
+        from .annotation import replay_annotation
+        from .data import usable
+        write_jsonl(args.output, (replay_annotation(r) for r in read_jsonl(args.input) if usable(r)))
+    elif command == 'annotation-ablate':
+        from .protocol_experiments import run_protocol_experiments
+        run_protocol_experiments(args.output, device=args.device, seeds=tuple(int(x) for x in args.seeds.split(',')),
+            split_seed=args.split_seed, budget=args.budget, epochs=args.epochs, context=args.context,
+            batch_size=args.batch_size, teacher_path=args.teacher, teacher_pool_limit=args.teacher_pool_limit,
+            threshold=args.threshold, families=args.families.split(','), train_path=args.train_input, test_path=args.test_input)
     elif command == 'finetune':
         from .finetuning import finetune
         metadata = finetune(read_jsonl(args.input), args.output, mode=args.mode, model_name=args.model, revision=args.revision, device=args.device, epochs=args.epochs, context=args.context, max_examples=args.max_examples)

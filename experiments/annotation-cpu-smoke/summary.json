@@ -1,0 +1,255 @@
+{
+  "ns": [
+    1,
+    2,
+    4
+  ],
+  "config": {
+    "seeds": [
+      42
+    ],
+    "split_seed": 42,
+    "budget": 512,
+    "epochs": 1,
+    "batch_size": 32,
+    "model": {
+      "width": 64,
+      "layers": 2,
+      "heads": 4,
+      "context": 64,
+      "classes": 3
+    },
+    "families": [
+      "phase1_branches",
+      "phase2_error_label"
+    ],
+    "teacher_pool_limit": 96,
+    "teacher_threshold": 0.2,
+    "teacher_sha256": null
+  },
+  "aggregated": {
+    "phase1_branches": {
+      "all_candidates": {
+        "seeds": [
+          42
+        ],
+        "best_of_n_mean": [
+          0.29977678571428573,
+          0.3108630952380953,
+          0.30416666666666664
+        ],
+        "best_of_n_std_across_seeds": [
+          null,
+          null,
+          null
+        ],
+        "endpoint_best_mean": 0.30416666666666664,
+        "validation_balanced_accuracy_mean": 0.33581113815307617,
+        "validation_macro_f1_mean": 0.23646776378154755,
+        "training_examples": 512
+      },
+      "chosen_path": {
+        "seeds": [
+          42
+        ],
+        "best_of_n_mean": [
+          0.29977678571428573,
+          0.3077380952380952,
+          0.2791666666666667
+        ],
+        "best_of_n_std_across_seeds": [
+          null,
+          null,
+          null
+        ],
+        "endpoint_best_mean": 0.2791666666666667,
+        "validation_balanced_accuracy_mean": 0.3333333432674408,
+        "validation_macro_f1_mean": 0.2084377557039261,
+        "training_examples": 512
+      }
+    },
+    "phase2_error_label": {
+      "include_first_error": {
+        "seeds": [
+          42
+        ],
+        "best_of_n_mean": [
+          0.29977678571428573,
+          0.3066964285714286,
+          0.275
+        ],
+        "best_of_n_std_across_seeds": [
+          null,
+          null,
+          null
+        ],
+        "endpoint_best_mean": 0.275,
+        "validation_balanced_accuracy_mean": 0.3333333432674408,
+        "validation_macro_f1_mean": 0.29546400904655457,
+        "training_examples": 512
+      },
+      "mask_first_error": {
+        "seeds": [
+          42
+        ],
+        "best_of_n_mean": [
+          0.29977678571428573,
+          0.30803571428571425,
+          0.25148809523809523
+        ],
+        "best_of_n_std_across_seeds": [
+          null,
+          null,
+          null
+        ],
+        "endpoint_best_mean": 0.25148809523809523,
+        "validation_balanced_accuracy_mean": 0.3333333432674408,
+        "validation_macro_f1_mean": 0.29546400904655457,
+        "training_examples": 512
+      }
+    }
+  },
+  "paired_differences": {
+    "phase1_branches": {
+      "comparison": "all_candidates minus chosen_path",
+      "seeds": [
+        42
+      ],
+      "differences": [
+        0.024999999999999967
+      ],
+      "mean_difference": 0.024999999999999967,
+      "sample_std_difference": null
+    },
+    "phase2_error_label": {
+      "comparison": "include_first_error minus mask_first_error",
+      "seeds": [
+        42
+      ],
+      "differences": [
+        0.02351190476190479
+      ],
+      "mean_difference": 0.02351190476190479,
+      "sample_std_difference": null
+    }
+  },
+  "runs": [
+    {
+      "family": "phase1_branches",
+      "condition": "all_candidates",
+      "seed": 42,
+      "training_examples": 512,
+      "optimizer_steps": 16,
+      "training_label_counts": {
+        "-1": 134,
+        "0": 94,
+        "1": 284
+      },
+      "post_error_targets": 0,
+      "validation_accuracy": 0.4457611668185962,
+      "validation_balanced_accuracy": 0.33581113815307617,
+      "validation_macro_f1": 0.23646776378154755,
+      "initial_backbone_sha256": "2383e936f4efbea19efeae48d930cf6200d251c9a1af44b336e133632f0312d6",
+      "validation_examples_sha256": "2e8d49e60f36d5088da6dd0a1a0286cba604de28c6160d07c697efc3c3d6aceb",
+      "training_seconds": 0.3730901670642197,
+      "exact_best_of_n": [
+        0.29977678571428573,
+        0.3108630952380953,
+        0.30416666666666664
+      ]
+    },
+    {
+      "family": "phase1_branches",
+      "condition": "chosen_path",
+      "seed": 42,
+      "training_examples": 512,
+      "optimizer_steps": 16,
+      "training_label_counts": {
+        "-1": 0,
+        "0": 0,
+        "1": 512
+      },
+      "post_error_targets": 0,
+      "validation_accuracy": 0.45487693710118504,
+      "validation_balanced_accuracy": 0.3333333432674408,
+      "validation_macro_f1": 0.2084377557039261,
+      "initial_backbone_sha256": "2383e936f4efbea19efeae48d930cf6200d251c9a1af44b336e133632f0312d6",
+      "validation_examples_sha256": "2e8d49e60f36d5088da6dd0a1a0286cba604de28c6160d07c697efc3c3d6aceb",
+      "training_seconds": 0.3609961657784879,
+      "exact_best_of_n": [
+        0.29977678571428573,
+        0.3077380952380952,
+        0.2791666666666667
+      ]
+    },
+    {
+      "family": "phase2_error_label",
+      "condition": "include_first_error",
+      "seed": 42,
+      "training_examples": 512,
+      "optimizer_steps": 16,
+      "training_label_counts": {
+        "-1": 76,
+        "0": 40,
+        "1": 396
+      },
+      "post_error_targets": 0,
+      "validation_accuracy": 0.7959641255605381,
+      "validation_balanced_accuracy": 0.3333333432674408,
+      "validation_macro_f1": 0.29546400904655457,
+      "initial_backbone_sha256": "2383e936f4efbea19efeae48d930cf6200d251c9a1af44b336e133632f0312d6",
+      "validation_examples_sha256": "8121def0d5165b09b5e9c18e9d6c59255e8289abb6b04545a7e80478d3cefb5e",
+      "training_seconds": 0.32660220889374614,
+      "exact_best_of_n": [
+        0.29977678571428573,
+        0.3066964285714286,
+        0.275
+      ]
+    },
+    {
+      "family": "phase2_error_label",
+      "condition": "mask_first_error",
+      "seed": 42,
+      "training_examples": 512,
+      "optimizer_steps": 16,
+      "training_label_counts": {
+        "-1": 0,
+        "0": 60,
+        "1": 452
+      },
+      "post_error_targets": 0,
+      "validation_accuracy": 0.7959641255605381,
+      "validation_balanced_accuracy": 0.3333333432674408,
+      "validation_macro_f1": 0.29546400904655457,
+      "initial_backbone_sha256": "2383e936f4efbea19efeae48d930cf6200d251c9a1af44b336e133632f0312d6",
+      "validation_examples_sha256": "8121def0d5165b09b5e9c18e9d6c59255e8289abb6b04545a7e80478d3cefb5e",
+      "training_seconds": 0.33638174971565604,
+      "exact_best_of_n": [
+        0.29977678571428573,
+        0.30803571428571425,
+        0.25148809523809523
+      ]
+    }
+  ],
+  "interpretation": "Within-family controlled comparisons; synthetic post-error targets are not human labels. A small biased subset does not establish general superiority.",
+  "test_set": {
+    "problems": 32,
+    "candidates": 184
+  },
+  "seconds": 6.702303874772042,
+  "environment": {
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.11.16",
+    "packages": {
+      "prm800k": "0.2.0",
+      "numpy": "2.4.6",
+      "torch": "2.15.0",
+      "sympy": "1.14.0",
+      "matplotlib": "3.11.2",
+      "transformers": "4.57.6"
+    },
+    "device": "cpu",
+    "base_git_commit": "25db0d16ee87e84a4678b9cf5b90e7d148034ce1"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "trajectories": 952,
+  "excluded_unusable_trajectories": 0,
+  "phases": {
+    "1": 128,
+    "2": 824
+  },
+  "human_replacement_events": 288,
+  "phase1_branch_events": 720,
+  "phase2_first_error_stops": 689,
+  "unlabeled_tail_steps_preserved_without_human_labels": 5001
+}

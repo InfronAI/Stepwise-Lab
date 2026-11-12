@@ -8,6 +8,8 @@ No experiment claims a full reproduction of the private GPT-4 training pipeline.
 | `m1-local` | Offline PRM/ORM training and selection over 32 held-out problems, 184 candidates |
 | `cpu-smoke` | Complete CPU fallback with smaller training/context budgets |
 | `m1-ablations` | Three seeds × five matched supervision/acquisition conditions |
+| `annotation-protocols` | Three paired annotation-policy comparisons × three seeds; 18 MPS runs, official-record state-machine replay and synthetic horizon diagnostics |
+| `annotation-cpu-smoke` | Four CPU runs verifying the two human-label protocol comparisons with smaller budgets/context |
 | `m1-generation-192tokens` | Eight fresh attempts on two official MATH test problems; all truncated without final answers |
 | `m1-generation` | Same problems at 768-token budget; five extracted answers, no correct answers |
 | `m1-sft` | Actual four-example generator LoRA SFT and two-example text-adaptation execution |

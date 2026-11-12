@@ -15,6 +15,7 @@ unreleased weights, datasets or the original compute budget.
 |---|---|---|---|
 | Human process annotations | Released as LFS data | Verified download, streaming audit, real offline fixture | Source hashes and subset-selection recipe in `prm800k/fixtures/manifest.json` |
 | Alternative steps and human replacement | Raw schema only | Correct chosen-history expansion, flagged/unrated filtering, object/string human replacements | Semantic tests plus full official-data audit |
+| Interactive phase 1 / first-error phase 2 | Released records and instructions | Explicit review state machine, deterministic replay, three paired protocol experiments | 952 official records replayed; 18 MPS training runs plus CPU fallback. Human post-error labels are unavailable; full-trajectory comparison uses identified synthetic labels only |
 | Three-class process supervision | No trainer | Causal endpoint loss, positive/neutral/negative targets | MPS and CPU checkpoints and actual loss histories |
 | Outcome supervision | No trainer | All-solution-token loss, final-token scoring | Local ORM trained and evaluated; subset is biased, not the original uniform ORM corpus |
 | Fixed generator | Scored outputs released | Released candidate replay and local Qwen generation | Pinned base revision; all generations retained, including failures |

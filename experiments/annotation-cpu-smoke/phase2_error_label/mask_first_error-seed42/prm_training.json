@@ -1,0 +1,62 @@
+{
+  "supervised_tokens_per_epoch": 512,
+  "optimizer_steps": 16,
+  "initial_backbone_sha256": "2383e936f4efbea19efeae48d930cf6200d251c9a1af44b336e133632f0312d6",
+  "kind": "prm",
+  "config": {
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "context": 64,
+    "classes": 3
+  },
+  "device": "cpu",
+  "seed": 42,
+  "epochs": 1,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "parameters": 120963,
+  "seconds": 0.33638174971565604,
+  "training_examples": 512,
+  "validation_examples": 892,
+  "truncated_training_examples": 506,
+  "truncated_validation_examples": 889,
+  "train_validation_overlap": 0,
+  "history": [
+    {
+      "balanced_accuracy": 0.3333333432674408,
+      "macro_f1": 0.29546400904655457,
+      "majority_class_baseline": 0.7959641255605381,
+      "epoch": 1,
+      "train_loss": 0.5075312256813049,
+      "validation_loss": 1.0800688165185697,
+      "validation_accuracy": 0.7959641255605381,
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          114
+        ],
+        [
+          0,
+          0,
+          68
+        ],
+        [
+          0,
+          0,
+          710
+        ]
+      ]
+    }
+  ],
+  "scope": "Small randomly initialized causal model; not a reproduction of GPT-4 quality.",
+  "family": "phase2_error_label",
+  "condition": "mask_first_error",
+  "training_examples_sha256": "dab292d854dccc6ce390cf9054ec2f7b37de88cd5a9d7ef75a210d48853276ca",
+  "validation_examples_sha256": "8121def0d5165b09b5e9c18e9d6c59255e8289abb6b04545a7e80478d3cefb5e",
+  "label_origins": {
+    "human": 512
+  },
+  "post_error_targets": 0
+}

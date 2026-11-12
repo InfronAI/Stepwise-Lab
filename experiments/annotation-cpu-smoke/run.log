@@ -1,0 +1,9 @@
+phase1_branches/all_candidates, seed=42, targets=512, problems=102
+PRM epoch 1/1: loss=1.0220, validation=0.446
+phase1_branches/chosen_path, seed=42, targets=512, problems=102
+PRM epoch 1/1: loss=0.1399, validation=0.455
+phase2_error_label/include_first_error, seed=42, targets=512, problems=454
+PRM epoch 1/1: loss=0.7722, validation=0.796
+phase2_error_label/mask_first_error, seed=42, targets=512, problems=454
+PRM epoch 1/1: loss=0.5075, validation=0.796
+Protocol experiments complete: experiments/annotation-cpu-smoke/ANALYSIS.zh-CN.md

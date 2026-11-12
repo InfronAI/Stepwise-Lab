@@ -1,0 +1,146 @@
+{
+  "phase1_branches": {
+    "available": {
+      "all_candidates": {
+        "examples": 5566,
+        "problems": 102,
+        "trajectories": 102,
+        "labels": {
+          "-1": 2058,
+          "0": 1087,
+          "1": 2421
+        },
+        "label_origins": {
+          "human": 5326,
+          "human_replacement": 240
+        },
+        "post_error_targets": 0
+      },
+      "chosen_path": {
+        "examples": 1788,
+        "problems": 102,
+        "trajectories": 102,
+        "labels": {
+          "-1": 0,
+          "0": 0,
+          "1": 1788
+        },
+        "label_origins": {
+          "human_replacement": 240,
+          "human": 1548
+        },
+        "post_error_targets": 0
+      }
+    },
+    "validation": {
+      "examples": 1097,
+      "problems": 26,
+      "trajectories": 26,
+      "labels": {
+        "-1": 390,
+        "0": 208,
+        "1": 499
+      },
+      "label_origins": {
+        "human": 1049,
+        "human_replacement": 48
+      },
+      "post_error_targets": 0
+    },
+    "validation_sha256": "2e8d49e60f36d5088da6dd0a1a0286cba604de28c6160d07c697efc3c3d6aceb"
+  },
+  "phase2_error_label": {
+    "available": {
+      "include_first_error": {
+        "examples": 3469,
+        "problems": 492,
+        "trajectories": 511,
+        "labels": {
+          "-1": 438,
+          "0": 277,
+          "1": 2754
+        },
+        "label_origins": {
+          "human": 3469
+        },
+        "post_error_targets": 0
+      },
+      "mask_first_error": {
+        "examples": 3031,
+        "problems": 454,
+        "trajectories": 469,
+        "labels": {
+          "-1": 0,
+          "0": 277,
+          "1": 2754
+        },
+        "label_origins": {
+          "human": 3031
+        },
+        "post_error_targets": 0
+      }
+    },
+    "validation": {
+      "examples": 892,
+      "problems": 123,
+      "trajectories": 129,
+      "labels": {
+        "-1": 114,
+        "0": 68,
+        "1": 710
+      },
+      "label_origins": {
+        "human": 892
+      },
+      "post_error_targets": 0
+    },
+    "validation_sha256": "8121def0d5165b09b5e9c18e9d6c59255e8289abb6b04545a7e80478d3cefb5e"
+  },
+  "synthetic_horizon": {
+    "available": {
+      "teacher_first_error": {
+        "examples": 225,
+        "problems": 95,
+        "trajectories": 96,
+        "labels": {
+          "-1": 96,
+          "0": 0,
+          "1": 129
+        },
+        "label_origins": {
+          "teacher": 225
+        },
+        "post_error_targets": 0
+      },
+      "teacher_full_trajectory": {
+        "examples": 1201,
+        "problems": 95,
+        "trajectories": 96,
+        "labels": {
+          "-1": 1016,
+          "0": 0,
+          "1": 185
+        },
+        "label_origins": {
+          "teacher": 1201
+        },
+        "post_error_targets": 976
+      }
+    },
+    "validation": {
+      "examples": 1321,
+      "problems": 91,
+      "trajectories": 96,
+      "labels": {
+        "-1": 1125,
+        "0": 0,
+        "1": 196
+      },
+      "label_origins": {
+        "teacher": 1321
+      },
+      "post_error_targets": 1099
+    },
+    "validation_sha256": "3beeaf64a6b45e8f7a23a82712b95735ee42e352bfea84e3e3540c149d4d2365"
+  }
+}

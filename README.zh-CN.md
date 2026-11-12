@@ -53,6 +53,7 @@ pytest -q
 |---|---|
 | 数据读取 | 流式 JSONL/gzip/HTTPS；识别 Git LFS 指针；固定提交与 SHA-256 校验 |
 | 原始标注处理 | 保留候选步骤、正确重建已选前缀、支持人工补写、保留三分类、过滤质检和未完成标注 |
+| 标注流程 | 第一阶段候选分支、第二阶段首错停止状态机；官方记录回放与三组配对实验 |
 | PRM 训练 | 因果 Transformer；只在标注步骤末端计算交叉熵；模型输入不包含标准答案 |
 | ORM 训练 | 最终答案正确性作为每个解答 token 的标签；用最后 token 的概率评分 |
 | PRM 排序 | 对数域计算概率连乘；默认中性计为正；提供连乘/最小值与中性标签的四种组合 |
@@ -95,6 +96,10 @@ flowchart TD
     CLI --> Demo[demo: 离线完整实验]
     CLI --> Gen[finetune / generate]
     CLI --> Ablate[synthetic-labels / active-select / ablate]
+    CLI --> Annotation[annotation-replay / annotation-ablate]
+    Annotation --> Protocol[annotation.py + protocol_experiments.py]
+    Protocol --> Train
+    Protocol --> Eval
     Demo --> Train[training.py + model.py]
     Demo --> Score[scoring.py]
     Gen --> Score
@@ -108,6 +113,8 @@ flowchart TD
 ```text
 prm800k/
   assets.py, io.py, data.py       # 数据读取、完整性和标注语义
+  annotation.py                 # 候选分支与首错停止状态机
+  protocol_experiments.py       # 标注策略配对实验
   model.py, training.py          # 小型因果模型与 CPU/MPS 训练
   generation.py, finetuning.py   # 可选开放模型生成与 LoRA
   scoring.py, supervision.py     # 概率聚合、合成标注和主动采样
@@ -129,12 +136,57 @@ docs/                           # 方法、复现审计与视频
 |---|---|---|
 | M1 本地 PRM/ORM | [分析](experiments/m1-local/ANALYSIS.md)、[指标](experiments/m1-local/evaluation.json)、[环境](experiments/m1-local/environment.json) | 32 道独立测试题、184 个完整候选；验证本地训练链路 |
 | 合成监督与主动采样 | [分析](experiments/m1-ablations/ANALYSIS.md) | 三个随机种子；使用本地弱教师 |
+| 标注流程对照 | [中文分析](experiments/annotation-protocols/ANALYSIS.zh-CN.md)、[流程与接口](docs/ANNOTATION_PROTOCOLS.md) | 三组配对实验 × 三个种子，共 18 次 MPS 训练 |
 | 新解答生成 | [输入与输出](experiments/m1-generation) | 两道官方测试题，固定开放模型版本 |
 | 短生成预算 | [192 token 实验](experiments/m1-generation-192tokens) | 保留未完成解答和失败结果 |
 | 生成器适配 | [SFT 与数学文本适配](experiments/m1-sft) | 4 个正确 SFT 样本、2 个文本样本；仅验证执行链路 |
 | 官方 Figure 3 评分重放 | [分析](experiments/official-replay/ANALYSIS.md) | 使用公开分数，不表示重新训练了原始模型 |
 
 本地小样本在 N=4 时，PRM 为 **25.42%**，ORM 为 **28.66%**，随机试验的多数投票均值为 **35.88%**。**本地小 PRM 没有超过 ORM**，这不构成完整基准结论。ORM 的 93.02% 验证准确率与多数类基线相同；请结合平衡准确率、macro-F1 和混淆矩阵查看。训练文件记录了上下文截断与类别不平衡。
+
+## 标注流程与对照实验
+
+第一阶段记录同一前缀下的候选步骤及评分，只沿被选中的候选或实际采用的人工修正继续。
+第二阶段逐步审核预生成轨迹，遇到首个负标签即结束。
+`AnnotationSession` 提供 `context()`、`submit()` 和 `export()`，候选与审核判断由调用者提供。
+已回放 **952 条官方轨迹**，其中 **689 条在首错处停止**；后续 **5,001 个步骤仍保持无人工标签**。
+
+```mermaid
+flowchart LR
+    P[题目] --> A[第一阶段：审核多个候选]
+    A --> B[选择候选或采用人工修正]
+    B --> C{解答完成？}
+    C -->|否：沿已选前缀继续| A
+    C -->|是| Save[保存标注与状态轨迹]
+    P --> D[第二阶段：审核下一个固定步骤]
+    D --> E{首次错误？}
+    E -->|是| F[停止；后续步骤保留为未标注]
+    E -->|否：还有步骤| D
+    E -->|否：最后一步| Save
+    F --> Save
+```
+
+```bash
+prm800k annotation-replay --input prm800k/fixtures/train.jsonl.gz \
+  --output experiments/runs/annotation-traces.jsonl.gz
+prm800k annotation-ablate --device mps --seeds 42,43,44 --budget 1024 \
+  --teacher experiments/m1-local/prm.pt \
+  --output experiments/runs/annotation-protocols
+```
+
+本次 M1 Pro 实测约 **100 秒**。同组内固定题目配额、训练目标数、模型初始化和验证集；
+所有实验使用相同的 32 道测试题、184 个候选解答。
+
+| 对照条件 | 左 / 右条件 best-of-4，三个种子均值 |
+|---|---:|
+| 第一阶段：全部候选 / 仅选中路径 | 27.27% / 27.85% |
+| 人工第二阶段：保留 / 屏蔽首错标签 | 26.18% / 27.99% |
+| 合成标签：首错截断 / 全轨迹 | 25.62% / 26.18% |
+
+这次小样本实验没有证明保留分支或首错标签能提高选择准确率，不能据此推断一般结论。
+人工第二阶段没有首错之后的真值，**只有第三组用固定本地教师生成全轨迹标签，并明确标记为合成监督**。
+精确训练子集、权重、逐步预测、类别分布、配对差值和中英文分析均已[保存在项目中](experiments/annotation-protocols)。
+详见[流程语义与 Python 接口](docs/ANNOTATION_PROTOCOLS.md)；另有独立的 [CPU 流程验证](experiments/annotation-cpu-smoke/ANALYSIS.zh-CN.md)。
 
 ## 分阶段运行
 

@@ -1,0 +1,15 @@
+{
+  "examples": 1024,
+  "problems": 102,
+  "trajectories": 102,
+  "labels": {
+    "-1": 274,
+    "0": 181,
+    "1": 569
+  },
+  "label_origins": {
+    "human": 992,
+    "human_replacement": 32
+  },
+  "post_error_targets": 0
+}

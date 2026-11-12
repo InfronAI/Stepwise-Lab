@@ -1,0 +1,23 @@
+{
+  "seeds": [
+    42
+  ],
+  "split_seed": 42,
+  "budget": 512,
+  "epochs": 1,
+  "batch_size": 32,
+  "model": {
+    "width": 64,
+    "layers": 2,
+    "heads": 4,
+    "context": 64,
+    "classes": 3
+  },
+  "families": [
+    "phase1_branches",
+    "phase2_error_label"
+  ],
+  "teacher_pool_limit": 96,
+  "teacher_threshold": 0.2,
+  "teacher_sha256": null
+}

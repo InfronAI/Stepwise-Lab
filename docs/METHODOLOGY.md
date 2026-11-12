@@ -31,6 +31,15 @@ actually present in the release. A null chosen completion without a replacement
 ends the prefix. Quality-control, screening, unfinished, flagged and unrated
 examples are excluded. Traversal stops after an incorrect selected step.
 
+The explicit `AnnotationSession` and `annotation-replay` command now expose these
+state transitions. `annotation-ablate` separates phase-1 branch retention, human
+phase-2 first-error supervision, and synthetic supervision horizon into three
+paired comparisons. Within-family training targets and per-problem quotas match;
+post-error synthetic labels carry their own provenance. Human phase-2 projections
+use completion 0, text-aligned to the original step; terminal alternatives are
+excluded in both human arms. See [annotation protocols](ANNOTATION_PROTOCOLS.md)
+for interfaces, flow diagram and experimental controls.
+
 ## Model inputs and training
 
 The small model has byte embeddings, learned positions, two causal transformer

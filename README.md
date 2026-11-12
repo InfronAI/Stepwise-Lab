@@ -54,6 +54,7 @@ The lock records the tested macOS/Python environment, including optional generat
 |---|---|
 | Data ingestion | Streaming JSONL/gzip/HTTPS; helpful LFS-pointer errors; pinned downloads with SHA-256 checks |
 | Annotation semantics | All labeled alternatives, chosen-prefix reconstruction, human replacements, three classes, QC/unfinished filtering, first-error boundary |
+| Annotation workflows | Phase-1 branching / phase-2 first-error state machine; official-record replay and three paired protocol experiments |
 | PRM training | Causal transformer; cross-entropy at each labeled step endpoint; no ground-truth answer in the model input |
 | ORM training | Final-answer labels on every solution token; final-token inference |
 | PRM ranking | Log-domain probability product; neutral-as-positive default; all four product/minimum × neutral policies |
@@ -96,6 +97,10 @@ flowchart TD
     CLI --> Demo[demo: offline end-to-end experiment]
     CLI --> Gen[finetune / generate]
     CLI --> Ablate[synthetic-labels / active-select / ablate]
+    CLI --> Annotation[annotation-replay / annotation-ablate]
+    Annotation --> Protocol[annotation.py + protocol_experiments.py]
+    Protocol --> Train
+    Protocol --> Eval
     Demo --> Train[training.py + model.py]
     Demo --> Score[scoring.py]
     Gen --> Score
@@ -109,6 +114,8 @@ flowchart TD
 ```text
 prm800k/
   assets.py, io.py, data.py       # ingestion, integrity, annotation semantics
+  annotation.py                 # interactive branches and first-error state transitions
+  protocol_experiments.py       # paired annotation-policy experiments
   model.py, training.py          # small causal PRM / ORM, MPS / CPU
   generation.py, finetuning.py   # optional open-model generation and LoRA
   scoring.py, supervision.py     # probability aggregation and acquisition
@@ -130,12 +137,64 @@ docs/                          # coverage audit, methodology and demo video
 |---|---|---|
 | M1 local PRM/ORM | [Analysis](experiments/m1-local/ANALYSIS.md), [metrics](experiments/m1-local/evaluation.json), [environment](experiments/m1-local/environment.json) | 32 held-out problems / 184 candidate solutions; functional local training |
 | Synthetic and active ablations | [Analysis](experiments/m1-ablations/ANALYSIS.md) | Three seeds; weak local teacher, not the paper's teacher |
+| Annotation protocols | [Analysis](experiments/annotation-protocols/ANALYSIS.md), [flow and interfaces](docs/ANNOTATION_PROTOCOLS.md) | Three paired comparisons × three seeds; 18 actual MPS training runs |
 | Fresh local generation | [Inputs and outputs](experiments/m1-generation) | Two official held-out problems; fixed open-model revision |
 | Short generation budget | [192-token outputs](experiments/m1-generation-192tokens) | Failed/incomplete attempts retained, not silently dropped |
 | Local generator adaptation | [SFT and math adapters](experiments/m1-sft) | Four correct SFT examples and two text-adaptation examples; execution smoke tests |
 | Official Figure 3 score replay | [Analysis](experiments/official-replay/ANALYSIS.md) | Released scores; no retraining of the original models |
 
 At N=4 the small local PRM achieved **25.42%**, ORM **28.66%**, and sampled majority voting **35.88%** on this small, biased candidate subset. **The local PRM did not outperform ORM.** These are not benchmark claims. In particular, ORM validation accuracy of 93.02% equals its majority-class baseline; inspect balanced accuracy, macro-F1 and confusion matrices. Context truncation and class imbalance are quantified in the saved training files.
+
+## Annotation workflows and experiments
+
+Phase 1 records reviewed alternative steps, then continues only along the selected
+candidate or adopted human replacement. Phase 2 reviews a fixed original trajectory
+and stops at its first negative step. `AnnotationSession` exposes `context()`,
+`submit()` and `export()`; the caller supplies candidates and review judgments.
+The saved replay covers **952 official trajectories**, including **689 first-error
+stops**; **5,001 subsequent steps remain without human labels**.
+
+```mermaid
+flowchart LR
+    P[Problem] --> A[Phase 1: review sibling candidates]
+    A --> B[Select candidate or human replacement]
+    B --> C{Finished?}
+    C -->|No: chosen prefix| A
+    C -->|Yes| Save[Save annotation and trace]
+    P --> D[Phase 2: review next fixed step]
+    D --> E{First error?}
+    E -->|Yes| F[Stop; preserve unlabeled tail]
+    E -->|No: more steps| D
+    E -->|No: last step| Save
+    F --> Save
+```
+
+```bash
+prm800k annotation-replay --input prm800k/fixtures/train.jsonl.gz \
+  --output experiments/runs/annotation-traces.jsonl.gz
+prm800k annotation-ablate --device mps --seeds 42,43,44 --budget 1024 \
+  --teacher experiments/m1-local/prm.pt \
+  --output experiments/runs/annotation-protocols
+```
+
+The recorded run took about **100 seconds** on M1 Pro. Within each comparison,
+training arms share problem quotas, target counts, initialization and validation
+data; all use the same 32 test problems / 184 candidate solutions.
+
+| Comparison | Left / right best-of-4, mean across 3 seeds |
+|---|---:|
+| Phase 1: all candidates / chosen path | 27.27% / 27.85% |
+| Human phase 2: include / mask first-error target | 26.18% / 27.99% |
+| Synthetic: first-error stop / full trajectory | 25.62% / 26.18% |
+
+These small experiments did not demonstrate a selection benefit from keeping
+branches or the first-error target. They do not establish general superiority.
+Human phase-2 data contains no post-error labels: **only the synthetic comparison
+uses full-trajectory targets, all explicitly attributed to the frozen local
+teacher**. Exact training subsets, checkpoints, predictions, label distributions,
+paired differences and bilingual analysis are [saved with the experiments](experiments/annotation-protocols).
+See [flow semantics and Python API](docs/ANNOTATION_PROTOCOLS.md). A separate
+[CPU smoke run](experiments/annotation-cpu-smoke/ANALYSIS.md) verifies the fallback.
 
 ## Run individual stages
 

@@ -1,0 +1,99 @@
+{
+  "phase1_branches": {
+    "available": {
+      "all_candidates": {
+        "examples": 5566,
+        "problems": 102,
+        "trajectories": 102,
+        "labels": {
+          "-1": 2058,
+          "0": 1087,
+          "1": 2421
+        },
+        "label_origins": {
+          "human": 5326,
+          "human_replacement": 240
+        },
+        "post_error_targets": 0
+      },
+      "chosen_path": {
+        "examples": 1788,
+        "problems": 102,
+        "trajectories": 102,
+        "labels": {
+          "-1": 0,
+          "0": 0,
+          "1": 1788
+        },
+        "label_origins": {
+          "human_replacement": 240,
+          "human": 1548
+        },
+        "post_error_targets": 0
+      }
+    },
+    "validation": {
+      "examples": 1097,
+      "problems": 26,
+      "trajectories": 26,
+      "labels": {
+        "-1": 390,
+        "0": 208,
+        "1": 499
+      },
+      "label_origins": {
+        "human": 1049,
+        "human_replacement": 48
+      },
+      "post_error_targets": 0
+    },
+    "validation_sha256": "2e8d49e60f36d5088da6dd0a1a0286cba604de28c6160d07c697efc3c3d6aceb"
+  },
+  "phase2_error_label": {
+    "available": {
+      "include_first_error": {
+        "examples": 3469,
+        "problems": 492,
+        "trajectories": 511,
+        "labels": {
+          "-1": 438,
+          "0": 277,
+          "1": 2754
+        },
+        "label_origins": {
+          "human": 3469
+        },
+        "post_error_targets": 0
+      },
+      "mask_first_error": {
+        "examples": 3031,
+        "problems": 454,
+        "trajectories": 469,
+        "labels": {
+          "-1": 0,
+          "0": 277,
+          "1": 2754
+        },
+        "label_origins": {
+          "human": 3031
+        },
+        "post_error_targets": 0
+      }
+    },
+    "validation": {
+      "examples": 892,
+      "problems": 123,
+      "trajectories": 129,
+      "labels": {
+        "-1": 114,
+        "0": 68,
+        "1": 710
+      },
+      "label_origins": {
+        "human": 892
+      },
+      "post_error_targets": 0
+    },
+    "validation_sha256": "8121def0d5165b09b5e9c18e9d6c59255e8289abb6b04545a7e80478d3cefb5e"
+  }
+}
